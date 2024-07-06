@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class RegisterComponent {
 
+  router = inject(Router)
+
+  onLogin() {
+    console.log('hello')
+    this.router.navigate(['/login'])
+  }
+
 }
+
+
