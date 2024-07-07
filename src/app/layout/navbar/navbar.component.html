@@ -1,0 +1,18 @@
+<!-- navbar.component.html -->
+<p-menubar [model]="items">
+    <ng-template pTemplate="start">
+        <h4 style="margin-right: 5px;">Strava2Excel</h4>
+    </ng-template>
+    <ng-template pTemplate="end">    
+      <span class="switch-icon" style="display: inline-block; vertical-align: middle;">
+        <i [class]="checked ? 'pi pi-sun' : 'pi pi-moon'"></i>
+      </span>           
+      <div style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+        <p-inputSwitch [(ngModel)]="checked" class="custom-switch" (onChange)="changeTheme(checked)"></p-inputSwitch>
+      </div>
+      <button type="button" (click)="logout()" pButton label="Logout" icon="pi pi-power-off" style="margin-left:.5rem; display: inline-block; vertical-align: middle;"></button>      
+    </ng-template>
+</p-menubar>
+
+
+<!-- pi-sun  pi-moon -->
