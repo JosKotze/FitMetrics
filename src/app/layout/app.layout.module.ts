@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppLayoutComponent } from './app.layout.component';
 import { RouterModule } from '@angular/router';
-import { AppSidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ButtonModule } from 'primeng/button';
 import { AppLayoutRoutingModule } from './layout.routing.module';
@@ -15,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppLayoutComponent,
-    AppSidebarComponent,
     NavbarComponent,
     AppLayoutComponent,
     NavbarComponent
