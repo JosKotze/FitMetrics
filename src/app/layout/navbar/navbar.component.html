@@ -1,7 +1,7 @@
-<!-- navbar.component.html -->
+
 <p-menubar [model]="items">
     <ng-template pTemplate="start">
-        <h4 style="margin-right: 5px;">Strava2Excel</h4>
+        <h2 style="margin-right: 5px;">FitMetrics</h2>
     </ng-template>
     <ng-template pTemplate="end">    
       <span class="switch-icon" style="display: inline-block; vertical-align: middle;">
@@ -15,4 +15,10 @@
 </p-menubar>
 
 
-<!-- pi-sun  pi-moon -->
+<!-- <p-sidebar [(visible)]="visibleSidebar1" [baseZIndex]="10000">
+  <h1 style="font-weight:normal">Left Sidebar</h1>
+  <p-button type="button" (click)="visibleSidebar1 = false" label="Save" styleClass="p-button-success"></p-button>
+  <p-button type="button" (click)="visibleSidebar1 = false" label="Cancel" styleClass="p-button-secondary"></p-button>
+</p-sidebar>
+
+<p-button type="button" (click)="visibleSidebar1 = true" icon="pi pi-bars"></p-button> -->
