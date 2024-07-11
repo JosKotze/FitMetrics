@@ -10,12 +10,16 @@ import { RegisterComponent } from './register/register.component';
 
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { MenubarModule } from 'primeng/menubar';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,9 @@ import { DividerModule } from 'primeng/divider';
     BrowserAnimationsModule,
     PanelModule,
     ButtonModule,
-    DividerModule
+    DividerModule,
+    MenubarModule,
+    InputSwitchModule
   ],
   providers: [
     provideClientHydration(),
