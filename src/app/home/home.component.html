@@ -1,1 +1,60 @@
-<h1>Home works</h1>
+<!-- @if (!isStravaAuthorized) {
+    <app-not-authorized-page></app-not-authorized-page>
+} -->
+
+
+    <div>
+        <p>Response Message: {{ responseMessage }}</p>
+    </div>
+
+    <!-- <div>
+        <p>Activities: {{ responseMessage2 }}</p>
+    </div> -->
+
+    <div *ngFor="let activity of activities">
+        <h2>{{ activity.name }}</h2>
+        <!-- Display other properties as needed -->
+    </div>
+    <div>
+        <p-table [value]="activities">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Distance</th>
+                    <th>Moving Time</th>
+                    <th>Elapsed Time</th>
+                    <th>Total Elevation Gain</th>
+                    <!-- <th>Avg bpm</th>
+                    <th>Max bpm</th> -->
+                    <th>Avg Speed</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-activity>
+                <tr>
+                    <td>{{ activity.name }}</td>
+                    <td>{{ activity.distance }}</td>
+                    <td>{{ activity.moving_time }}</td>
+                    <td>{{ activity.elapsed_time }}</td>
+                    <td>{{ activity.total_elevation_gain }}</td>
+                    <!-- <td>{{ activity.average_heartrate }}</td>
+                    <td>{{ activity.max_heartrate }}</td> -->
+                    <td>{{ activity.average_speed }}</td>
+                    <td>{{ activity.start_date_local }}</td>
+                    <td>{{ activity.sport_type }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+<!-- <div>
+    <h1>Your data</h1>
+    <div>
+        <p-chart type="line" [data]="basicData" [options]="basicOptions"></p-chart>
+    </div>
+    <hr>
+    <div>
+        <p-chart type="polarArea" [data]="basicData" [options]="basicData"></p-chart>
+    </div>
+</div> -->
