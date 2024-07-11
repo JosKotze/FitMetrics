@@ -9,7 +9,6 @@ import { ThemeService } from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-navbar',
-  standalone: false,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
