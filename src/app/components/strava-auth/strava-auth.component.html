@@ -1,0 +1,72 @@
+
+
+<div class="mt-5">
+    <form [formGroup]="notAuthFormGroup" (ngSubmit)="onSubmit()">
+        <div class="flex flex-column gap-2 w-7 mx-auto">
+            <label for="clientId">Enter Strava client ID and Client Secret</label>
+            <small id="clientId-help">Strava Client ID:</small>
+            <input [formControl]="notAuthFormGroup.controls.clientId" pInputText id="clientId" name="clientId" />
+            
+            <small id="secret-help">Strava Client Secret:</small>
+            <input [formControl]="notAuthFormGroup.controls.clientSecret" pInputText id="secret" name="clientSecret" />
+
+            <button type="submit" pButton label="Navigate to Strava"></button>
+        </div>
+        <div class="flex flex-column gap-2 w-7 mx-auto">
+            <p><b>Authorization Code:</b> {{ code }}</p>
+        </div>
+    </form>
+</div>
+
+<!-- <script>
+    // JavaScript to generate the authorization URL when the client ID is submitted
+    document.querySelector("form[action='/generate-authorization-url']").addEventListener("submit", async function(event) {
+        event.preventDefault();
+    
+        const clientId = document.getElementById("clientId").value;
+        const clientSecret = document.getElementById("ClientSecret").value;
+        const authorizationUrl = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=http://localhost&response_type=code&scope=activity:read_all`;
+
+        document.getElementById("hiddenClientId").value = clientId;
+        document.getElementById("hiddenClientSecret").value = clientSecret;
+
+        document.getElementById("successMsg").innerHTML = `<p> Success! Proceed to step 2 🚀 </p>`;
+
+        document.getElementById("authorizationUrl").innerHTML = `
+            <a href="${authorizationUrl}" target="_blank">
+                ${authorizationUrl}
+            </a>
+        `;
+    });
+
+    // JavaScript to handle the form submission for "Get Tokens"
+    document.querySelector("form[action='/Authentication/PostTokens']").addEventListener("submit", async function(event) {
+        event.preventDefault(); // Prevent the form from submitting
+
+        const clientId = document.getElementById("hiddenClientId").value;
+        const clientSecret = document.getElementById("hiddenClientSecret").value;
+        const authorizationCode = document.querySelector("input[name='authorizationCode']").value;
+
+        // Make an AJAX request to submit the form data
+        const response = await fetch("/Authentication/PostTokens", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ clientId, clientSecret, authorizationCode }),
+        });
+
+        if (response.ok) {
+            // Parse the JSON response to get the token data
+            const tokenData = await response.json();
+
+            // Extract the AccessToken and RefreshToken
+            const accessToken = tokenData.AccessToken;
+            const refreshToken = tokenData.RefreshToken;
+
+            // Display the tokens in the accessToken and refreshToken elements
+            document.getElementById("accessToken").innerText = `Access Token: ${accessToken}`;
+            document.getElementById("refreshToken").innerText = `Refresh Token: ${refreshToken}`;
+        }
+    });
+</script> -->

@@ -40,7 +40,7 @@ export class NavbarComponent {
       {
         label: 'StravaAuthentication',
         icon: 'pi pi-fw pi-key',
-        routerLink: '/stravaAuthorization'
+        routerLink: '/stravaAuth'
       },
       {
         label: 'logout',
