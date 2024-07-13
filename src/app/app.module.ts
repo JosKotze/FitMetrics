@@ -13,13 +13,16 @@ import { DividerModule } from 'primeng/divider';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MenubarModule } from 'primeng/menubar';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { StravaAuthComponent } from './components/strava-auth/strava-auth.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    NavbarComponent
+    NavbarComponent,
+    StravaAuthComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ButtonModule,
     DividerModule,
     MenubarModule,
-    InputSwitchModule
+    InputSwitchModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideClientHydration(),
