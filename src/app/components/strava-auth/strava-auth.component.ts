@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/app.state';
+import { setAccessToken, setAuthCode } from '../../store/actions/auth.actions';
+import { StravaAuthService } from './strava-auth.service';
+import { response } from 'express';
+import { error } from 'console';
 
 @Component({
   selector: 'app-strava-auth',
@@ -22,7 +28,9 @@ export class StravaAuthComponent implements OnInit {
   code: string = '';
   constructor(
     private router: Router,
-    private currentRoute: ActivatedRoute
+    private currentRoute: ActivatedRoute,
+    private store: Store<AppState>,
+    private stravaAuthService: StravaAuthService
   ) {}
   
   ngOnInit(): void {
@@ -30,6 +38,20 @@ export class StravaAuthComponent implements OnInit {
       this.code = params['code']; // Extract the value of the 'code' query parameter
       console.log('Code:', this.code);
     });
+
+    if (this.code) {
+      // Dispatch action to save the code in the state
+      //this.store.dispatch(setAuthCode({ code: this.code }));
+      this.stravaAuthService.exchangeAuthorizationCode(this.code).subscribe(
+        response => {
+          this.store.dispatch(setAccessToken({ accessToken: response.access_token }));
+          this.router.navigate(['/'])
+        },
+        error => {
+          console.error('Error exchanging code:', error);
+        }
+      )
+    }
   }
 
   onSubmit(): void{

@@ -1,0 +1,25 @@
+{
+  "runtime": "Net80",
+  "documentGenerator": {
+    "fromDocument": {
+      "url": "https://localhost:7279/swagger/v1/swagger.json"
+    }
+  },
+  "codeGenerators": {
+    "openApiToTypeScriptClient": {
+      "className": "FitMetricsApi",
+      "template": "Angular",
+      "promiseType": "Promise",
+      "httpClass": "HttpClient",
+      "useSingletonProvider": true,
+      "useHttpClient": true,
+      "injectHttpClient": true,
+      "generateClientInterfaces": true,
+      "output": "src/app/api/FitMetricsApi.ts",
+      "generateOptionalParameters": true,
+      "dateTimeType": "Date",
+      "jsonLibrary": "NewtonsoftJson",
+      "templateDirectory": "nswag-templates"
+    }
+  }
+}

@@ -14,7 +14,14 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { MenubarModule } from 'primeng/menubar';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { StravaAuthComponent } from './components/strava-auth/strava-auth.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { authReducer } from './store/reducers/auth.reducer';
+import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { FitMetricsApi } from './api/FitMetricsApi';
+import { fitMetricsApiFactory } from '../../nswag-templates/fit-metrics-api.factory';
 
 @NgModule({
   declarations: [
@@ -22,7 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     RegisterComponent,
     NavbarComponent,
-    StravaAuthComponent
+    StravaAuthComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -33,10 +41,19 @@ import { ReactiveFormsModule } from '@angular/forms';
     DividerModule,
     MenubarModule,
     InputSwitchModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    StoreModule.forRoot({ auth: authReducer}),
+    StoreDevtoolsModule.instrument({ maxAge: 5}),
+    HttpClientModule
   ],
   providers: [
     provideClientHydration(),
+    // {
+    //   provide: 'BASE_URL', 
+    //   useValue: 'https://localhost:7279' // Your API base URL
+    // },
+    { provide: FitMetricsApi, useFactory: fitMetricsApiFactory }
   ],
   bootstrap: [AppComponent]
 })
