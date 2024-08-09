@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:FitMetrics": "node dist/fit-metrics/server/server.mjs",
-    "nswag": "nswag openapi2tsclient /input:https://localhost:7279/swagger/v1/swagger.json /output:src/app/api/FitMetricsApi.ts /className:FitMetricsApi"
+    "nswag": "nswag run nswag.json"
   },
   "private": true,
   "dependencies": {

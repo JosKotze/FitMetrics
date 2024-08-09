@@ -18,10 +18,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { authReducer } from './store/reducers/auth.reducer';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { FitMetricsApi } from './api/FitMetricsApi';
-import { fitMetricsApiFactory } from '../../nswag-templates/fit-metrics-api.factory';
+import { provideRouter } from '@angular/router';
+import { appReducers } from './store/app.state';
 
 @NgModule({
   declarations: [
@@ -43,17 +44,16 @@ import { fitMetricsApiFactory } from '../../nswag-templates/fit-metrics-api.fact
     InputSwitchModule,
     ReactiveFormsModule,
     FormsModule,
-    StoreModule.forRoot({ auth: authReducer}),
+    StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 5}),
     HttpClientModule
   ],
   providers: [
-    provideClientHydration(),
-    // {
-    //   provide: 'BASE_URL', 
-    //   useValue: 'https://localhost:7279' // Your API base URL
-    // },
-    { provide: FitMetricsApi, useFactory: fitMetricsApiFactory }
+    //provideClientHydration(),
+    //FitMetricsApi,
+    //provideHttpClient(withFetch()) // Enabling fetch API 
+    provideClientHydration(), 
+    provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]
 })

@@ -1,26 +1,48 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, concatMap, Observable, switchMap, tap, throwError } from 'rxjs';
+import { AppState } from '../../store/app.state';
+import { setAccessToken } from '../../store/actions/auth.actions';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class StravaAuthService {
-
   private clientId = '112649';
-  private clientSecret = '0638ca5f727124b3ebd6ff2f650b478b00964874';
+  private clientSecret = '3d7ddf466da42cfe4771c371221025eaa06d3f5d';
   private redirectUri = 'http://localhost:4200/stravaAuth';
+  accessToken = '';
 
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private store: Store<AppState>) { }
 
   exchangeAuthorizationCode(code: string): Observable<any> {
     const url = 'https://www.strava.com/api/v3/oauth/token';
-    const body = new FormData();
-    body.append('client_id', this.clientId);
-    body.append('client_secret', this.clientSecret);
-    body.append('code', code);
-    body.append('grant_type', 'authorization_code');
-
-    return this.http.post(url, body);
+    
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+  
+    const body = new HttpParams()
+      .set('client_id', this.clientId)
+      .set('client_secret', this.clientSecret)
+      .set('code', code)
+      .set('grant_type', 'authorization_code');
+  
+    console.log('exchangeAuthorizationCode:');
+    console.log('Request body:', body.toString());
+    return this.http.post<any>(url, body.toString(), { headers }).pipe(
+      tap(response => {
+        console.log('Response from Strava:', response); // Log entire response
+      }),
+      catchError(error => {
+        console.error('Error exchanging authorization code:', error);
+        return throwError(() => error);
+      })
+    );
   }
+
 }

@@ -1,22 +1,36 @@
 
 
-<div class="mt-5">
-    <form [formGroup]="notAuthFormGroup" (ngSubmit)="onSubmit()">
-        <div class="flex flex-column gap-2 w-7 mx-auto">
-            <label for="clientId">Enter Strava client ID and Client Secret</label>
-            <small id="clientId-help">Strava Client ID:</small>
-            <input [formControl]="notAuthFormGroup.controls.clientId" pInputText id="clientId" name="clientId" />
-            
-            <small id="secret-help">Strava Client Secret:</small>
-            <input [formControl]="notAuthFormGroup.controls.clientSecret" pInputText id="secret" name="clientSecret" />
 
-            <button type="submit" pButton label="Navigate to Strava"></button>
+
+
+    <div class="mt-5">
+        <form [formGroup]="notAuthFormGroup" (ngSubmit)="onSubmit()">
+            <div class="flex flex-column gap-2 w-7 mx-auto">
+                <label for="clientId">Enter Strava client ID and Client Secret</label>
+                <small id="clientId-help">Strava Client ID:</small>
+                <input [formControl]="notAuthFormGroup.controls.clientId" pInputText id="clientId" name="clientId" />
+                
+                <small id="secret-help">Strava Client Secret:</small>
+                <input [formControl]="notAuthFormGroup.controls.clientSecret" pInputText id="secret" name="clientSecret" />
+    
+                <button class="mx-auto text-center w-auto" type="submit" pButton label="Navigate to Strava"></button>
+            </div>
+        </form>
+        <div class="flex flex-column gap-2 mx-auto mt-5">
+            <button class="mx-auto text-center w-auto" (click)="finalizeAuthorization()" pButton label="Finalize Authorizaiton"></button>
         </div>
-        <div class="flex flex-column gap-2 w-7 mx-auto">
-            <p><b>Authorization Code:</b> {{ code }}</p>
-        </div>
-    </form>
-</div>
+    </div>
+
+
+
+    <div>
+        <h1>
+            You are authorized. Navigate to homepage to see data
+        </h1>
+        <p>{{ this.authorized }}</p>
+        <button class="mx-auto text-center w-auto" pButton routerLink="/" label="Home"></button>
+    </div>
+
 
 <!-- <script>
     // JavaScript to generate the authorization URL when the client ID is submitted
