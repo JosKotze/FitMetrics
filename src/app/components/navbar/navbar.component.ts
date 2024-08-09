@@ -25,17 +25,17 @@ export class NavbarComponent {
       {
         label: 'Home',
         icon: 'pi pi-fw pi-home',
-        routerLink: '/home'
+        routerLink: '/'
       },
       {
         label: 'Activities Data',
         icon: 'pi pi-fw pi-cog',
-        routerLink: '/services'
+        routerLink: '/invalidTest'
       },
       {
         label: 'Activities to Excel',
         icon: 'pi pi-fw pi-envelope',
-        routerLink: '/contact'
+        routerLink: ''
       },
       {
         label: 'StravaAuthentication',
