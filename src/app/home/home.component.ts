@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 import { selectAccessToken, selectAuthCode } from '../store/selectors/auth.selector';
 import { Activity, FitMetricsApi } from '../api/FitMetricsApi';
 import { HomeService } from './home.service';
+
+
 //import { ActivityService } from '../services/activity/activity.service';
 
 @Component({

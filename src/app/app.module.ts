@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +18,9 @@ import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/
 import { appReducers } from './store/app.state';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { CommonModule } from '@angular/common';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -28,9 +30,9 @@ import { SignupComponent } from './components/signup/signup.component';
     StravaAuthComponent,
     LoginComponent,
     SignupComponent,
+    HomeComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     PanelModule,
@@ -42,7 +44,9 @@ import { SignupComponent } from './components/signup/signup.component';
     FormsModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 5}),
-    HttpClientModule
+    HttpClientModule,
+    CommonModule,
+    BrowserModule
   ],
   providers: [
     //provideClientHydration(),
