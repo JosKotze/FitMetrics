@@ -5,9 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PanelModule } from 'primeng/panel';
-import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -17,21 +15,19 @@ import { StravaAuthComponent } from './components/strava-auth/strava-auth.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { authReducer } from './store/reducers/auth.reducer';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
-import { HomeComponent } from './home/home.component';
-import { FitMetricsApi } from './api/FitMetricsApi';
-import { provideRouter } from '@angular/router';
 import { appReducers } from './store/app.state';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     RegisterComponent,
     NavbarComponent,
     StravaAuthComponent,
-    HomeComponent
+    LoginComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,
