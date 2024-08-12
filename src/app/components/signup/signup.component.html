@@ -1,0 +1,28 @@
+<!-- signup.component.html -->
+<div class="signup-container flex justify-content-center align-items-center min-vh-100">
+    <div class="signup-form p-3 border-round">
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <div class="field mb-3">
+                <label for="name" class="mb-2">Name:</label>
+                <input pInputText id="name" formControlName="name" type="text" class="w-full h-2rem border-solid border-round border-blue-400" />
+            </div>
+
+            <div class="field mb-3">
+                <label for="surname" class="mb-2">Surname:</label>
+                <input pInputText id="surname" formControlName="surname" type="text" class="w-full h-2rem border-solid border-round border-blue-400" />
+            </div>
+
+            <div class="field mb-3">
+                <label for="email" class="mb-2">Email:</label>
+                <input pInputText id="email" formControlName="email" type="email" class="w-full h-2rem border-solid border-round border-blue-400" />
+            </div>
+
+            <div class="field mb-3">
+                <label for="password" class="mb-2">Password:</label>
+                <input pInputText id="password" formControlName="password" type="password" class="w-full h-2rem border-solid border-round border-blue-400" />
+            </div>
+
+            <button pButton type="submit" label="Signup" class="w-full"></button>
+        </form>
+    </div>
+</div>
