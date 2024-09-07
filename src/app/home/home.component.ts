@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AppState } from '../store/app.state';
 import { Store } from '@ngrx/store';
 import { selectAccessToken, selectAuthCode } from '../store/selectors/auth.selector';
-import { Activity, FitMetricsApi } from '../api/FitMetricsApi';
+import { Activity } from '../api/FitMetricsApi';
 import { HomeService } from './home.service';
 
 
