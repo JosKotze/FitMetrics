@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/app.state';
 import { selectAccessToken, selectAuthCode } from './store/selectors/auth.selector';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +12,14 @@ import { selectAccessToken, selectAuthCode } from './store/selectors/auth.select
 })
 export class AppComponent {
   title = 'FitMetrics';
+  showNavbar: boolean = true;
 
-  // authCode$ = this.store.select(selectAuthCode);
-
-  // constructor(private store: Store<AppState>) {}
-
-  // ngOnInit() {
-  //   this.authCode$.subscribe(code => {
-  //     console.log('Auth Code:', code);
-  //   });
-
-  //   this.accessToken$.subscribe(accessToken => {
-  //     console.log('Access Token 123:', accessToken);
-  //   });
-  // }
+  constructor(private router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const hideNavbarRoutes = ['/signup', '/login'];
+      this.showNavbar = !hideNavbarRoutes.includes(this.router.url);
+    });
+  }
 }

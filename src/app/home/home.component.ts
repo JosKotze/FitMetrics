@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AppState } from '../store/app.state';
 import { Store } from '@ngrx/store';
 import { selectAccessToken, selectAuthCode } from '../store/selectors/auth.selector';
-import { Activity, FitMetricsApi } from '../api/FitMetricsApi';
+import { Activity } from '../api/FitMetricsApi';
 import { HomeService } from './home.service';
 
 
@@ -48,14 +48,23 @@ export class HomeComponent implements OnInit {
       this.isStravaAuthorized = true;
 
       // Fetch activities from the service
-      this.homeService.getActivities(accessToken).subscribe(
+      this.homeService.getSavedActivities().subscribe(
         (activities: Activity[]) => {
-          this.activities = activities;
-        },
-        (error) => {
-          this.responseMessage = `Error: ${error.message}`;
-        }
-      );
+            this.activities = activities;
+          },
+          (error) => {
+            this.responseMessage = `Error: ${error.message}`;
+          }
+        );
+
+      // this.homeService.getActivities(accessToken).subscribe(
+      //   (activities: Activity[]) => {
+      //     this.activities = activities;
+      //   },
+      //   (error) => {
+      //     this.responseMessage = `Error: ${error.message}`;
+      //   }
+      // );
       
     });
   }
