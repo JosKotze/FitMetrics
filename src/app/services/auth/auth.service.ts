@@ -49,6 +49,12 @@ export class AuthService {
     this.currentUser.set(null);
   }
 
+  updateAccessTokenLocalStorage(accesstoken: string) {
+
+    localStorage.setItem('accesstoken', JSON.stringify(accesstoken));
+
+  }
+
   isAuthenticated(): Observable<boolean> {
     return this.store.select(selectIsAuthenticated);
   }

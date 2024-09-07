@@ -25,7 +25,6 @@ import { MessageService } from 'primeng/api';
 import { appReducers } from './store/app.state';
 import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
 
-
 @NgModule({
   declarations: [
     AppComponent,
