@@ -14,12 +14,34 @@ export class AppComponent {
   title = 'FitMetrics';
   showNavbar: boolean = true;
 
-  constructor(private router: Router) {
+    constructor(private router: Router) { }
+
+  ngOnInit(): void {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       const hideNavbarRoutes = ['/signup', '/login'];
       this.showNavbar = !hideNavbarRoutes.includes(this.router.url);
     });
+
+    this.checkAccessToken();
+  }
+
+  checkAccessToken(): void {
+    //var existingEntries = JSON.parse(localStorage.getItem("store_owner_ad_contacts"));
+    const accessToken = JSON.parse(localStorage.getItem("accesstoken")!);
+    //let accessToken = localStorage.getItem('accesstoken');
+
+    if (accessToken !== null) {
+      console.log('AccessToken exists:', accessToken);
+    } else {
+      console.log('AccessToken does not exist');
+    }
+
+    for (let i = 0; i < localStorage.length; i++) {
+      let key = localStorage.key(i);
+      let value = localStorage.getItem(key!);
+      console.log(`${key}: ${value}`);
+    }
   }
 }

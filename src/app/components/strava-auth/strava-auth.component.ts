@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -7,6 +7,7 @@ import { setAccessToken, setAuthCode, setTestData } from '../../store/actions/au
 import { StravaAuthService } from './strava-auth.service';
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { selectAccessToken } from '../../store/selectors/auth.selector';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-strava-auth',
@@ -24,7 +25,7 @@ export class StravaAuthComponent implements OnInit {
   authCode: string = '';
   accessTokenCheck$ = new Observable<string | null>();
   successMessage: string = '';
-
+  authService = inject(AuthService)
 
   authorized: boolean = false;
 
@@ -73,7 +74,7 @@ export class StravaAuthComponent implements OnInit {
           console.log('Access Token: in component', response.access_token);
           if (response.access_token) {
             this.store.dispatch(setAccessToken({ accessToken: response.access_token }));
-
+            this.authService.updateAccessTokenLocalStorage(response.access_token);
             this.successMessage = 'Successfully authorized'
             this.authorized = true;
           } else {

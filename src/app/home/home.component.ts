@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppState } from '../store/app.state';
@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { selectAccessToken, selectAuthCode } from '../store/selectors/auth.selector';
 import { Activity } from '../api/FitMetricsApi';
 import { HomeService } from './home.service';
+import { setAccessToken } from '../store/actions/auth.actions';
 
 
 //import { ActivityService } from '../services/activity/activity.service';
@@ -25,13 +26,17 @@ export class HomeComponent implements OnInit {
   basicOptions: any;
   //fitMetricsApi = inject(FitMetricsApi);
   homeService = inject(HomeService);
-
+  accessTokenFromLocalStorage: string | null = ''
 
   constructor(private http: HttpClient, private store: Store<AppState>) {
     this.accessToken = this.store.select(selectAccessToken);
   }
 
   ngOnInit(): void {
+    this.accessTokenFromLocalStorage = localStorage.getItem('accesstoken');
+    if(this.accessTokenFromLocalStorage != null){
+      this.store.dispatch(setAccessToken({accessToken: this.accessTokenFromLocalStorage}));
+    }
 
     this.accessToken = this.store.select(selectAccessToken);
 
