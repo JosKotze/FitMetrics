@@ -1,0 +1,23 @@
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw; /* Width of the container */
+    height: 100vh; /* Height of the container */
+    background: rgb(252,82,0) !important;
+    background: linear-gradient(37deg, rgba(252,82,0,1) 16%, rgba(200,200,200,0.2637429971988795) 100%) !important;
+    overflow: hidden; /* Ensure no scrollbars */
+    position: absolute; /* Absolute positioning to center it */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset the positioning to truly center it */
+}
+
+.login-form {
+    max-width: 600px; /* Adjust to control form width */
+    background: rgba(255, 255, 255, 0.9); /* Slightly opaque white background */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Shadow for better contrast */
+}

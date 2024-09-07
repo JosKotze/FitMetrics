@@ -1,17 +1,35 @@
-<!-- login.component.html -->
-<div class="card">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="p-fluid p-formgrid p-grid">
-            <div class="p-field p-col">
-                <label for="email">Email:</label>
-                <input id="email" formControlName="email" type="email" />
+<!-- signup.component.html -->
+<p-toast
+  position="bottom-center"
+  key="confirm"
+  [baseZIndex]="5000"
+>
+  <ng-template let-message pTemplate="message">
+    <div class="flex flex-column align-items-start" style="flex: 1">
+      <div class="flex align-items-center gap-2">
+        <span class="font-bold text-900">{{ message.summary }}</span>
+      </div>
+      <div class="font-medium text-lg my-3 text-900">
+        {{ message.detail }}
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+<div class="login-container">
+    <div class="login-form">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="field mb-3">
+                <label for="username" class="mb-2">Username:</label>
+                <input pInputText id="username" formControlName="username" type="text" class="w-full h-2rem border-solid border-round border-blue-400" />
             </div>
-            <div class="p-field p-col">
-                <label for="password">Password:</label>
-                <input id="password" formControlName="password" type="password" />
+
+            <div class="field mb-3">
+                <label for="password" class="mb-2">Password:</label>
+                <input pInputText id="password" formControlName="password" type="password" class="w-full h-2rem border-solid border-round border-blue-400" />
             </div>
-        </div>
-        <button type="submit" [disabled]="loginForm.invalid">Login</button>
-    </form>
-  </div>
-  
+
+            <button pButton type="submit" label="Login" class="w-full"></button>
+            <p><a routerLink="/signup">Signup</a></p>           
+        </form>
+    </div>
+</div>

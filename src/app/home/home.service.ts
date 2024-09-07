@@ -14,6 +14,11 @@ export class HomeService {
 
   getActivities(accessToken: string): Observable<Activity[]> {
     // Correct URL path
-    return this.http.get<Activity[]>(`${this.apiUrl}/api/Activities?accessToken=${accessToken}`);
+    return this.http.get<Activity[]>(`${this.apiUrl}/api/Activities/getActivitiesFromStrava?accessToken=${accessToken}`);
+  }
+
+  getSavedActivities(): Observable<Activity[]> {
+    // Correct URL path
+    return this.http.get<Activity[]>(`${this.apiUrl}/api/Activities/getSavedActivities`);
   }
 }

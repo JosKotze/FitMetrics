@@ -1,10 +1,13 @@
-import { Component} from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { MenubarModule } from 'primeng/menubar';
 import { ButtonModule } from 'primeng/button';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../services/theme/theme.service';
+import { Store } from '@ngrx/store';
+import { logout } from '../../store/actions/session.actions';
+import { AuthService } from '../../services/auth/auth.service';
 
 
 @Component({
@@ -14,11 +17,11 @@ import { ThemeService } from '../../services/theme/theme.service';
 })
 export class NavbarComponent {
   items: any[] = [];
-
+  authService = inject(AuthService);
   checked = false;
 
   constructor(private router: Router,
-    private themeService: ThemeService) {}
+    private themeService: ThemeService, private store: Store) {}
 
   ngOnInit(): void {
     this.items = [
@@ -69,7 +72,9 @@ export class NavbarComponent {
   logout() {
     // Perform any logout logic (e.g., clearing user session, etc.)
     // Then navigate to the login page
-    console.log("logout gets triggered")
+
+    this.store.dispatch(logout());
+
     this.router.navigate(['']);
   }
   

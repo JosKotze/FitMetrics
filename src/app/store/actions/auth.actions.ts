@@ -14,3 +14,17 @@ export const setTestData = createAction(
   '[Auth] Set Test Data',
   props<{ testData: string }>()
 )
+
+export const setloginSuccess = createAction(
+  '[Session] Login Success',
+  props<{ sessionUsername: string }>()
+);
+
+export const setLogout = createAction('[Session] Logout');
+
+// export const loginSuccess = createAction(
+//   '[Session] Login Success',
+//   props<{ sessionUserEmail: string }>()
+// );
+
+// export const logout = createAction('[Session] Logout');

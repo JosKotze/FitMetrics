@@ -15,12 +15,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
-import { appReducers } from './store/app.state';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { CommonModule } from '@angular/common';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { HomeComponent } from './home/home.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { appReducers } from './store/app.state';
+import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
+
 
 @NgModule({
   declarations: [
@@ -42,18 +46,20 @@ import { HomeComponent } from './home/home.component';
     InputSwitchModule,
     ReactiveFormsModule,
     FormsModule,
-    StoreModule.forRoot(appReducers),
+    StoreModule.forRoot(appReducers, { metaReducers }),
     StoreDevtoolsModule.instrument({ maxAge: 5}),
     HttpClientModule,
     CommonModule,
-    BrowserModule
+    BrowserModule,
+    ToastModule
   ],
   providers: [
     //provideClientHydration(),
     //FitMetricsApi,
     //provideHttpClient(withFetch()) // Enabling fetch API 
     provideClientHydration(), 
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
