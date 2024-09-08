@@ -18,12 +18,15 @@ import { AuthService } from '../../services/auth/auth.service';
 export class NavbarComponent {
   items: any[] = [];
   authService = inject(AuthService);
-  checked = false;
+  checked: boolean = false;
+  selectedTheme: string = 'dark';
 
   constructor(private router: Router,
     private themeService: ThemeService, private store: Store) {}
 
   ngOnInit(): void {
+    this.themeService.setTheme(this.selectedTheme);
+
     this.items = [
       {
         label: 'Home',
@@ -47,35 +50,38 @@ export class NavbarComponent {
       },
       {
         label: 'logout',
-        icon: 'pi pi-fw pi-spin pi-power-off',
-        routerLink: '/login'
+        icon: 'pi pi-fw pi-power-off',
+        command: () => this.logout()
       },
     ];
   }
 
-  changeTheme(theme: boolean) {
-    console.log("changeTheme get triggered")
-    if(theme){
-      //let aTheme:string = "saga-blue";
-      this.themeService.switchTheme("saga-blue");
-      console.log("true")
-      console.log("The theme:" + this.themeService.switchTheme("saga-blue"))
-    }
-    else {
-      //let aTheme:string = "vela-blue";
-      this.themeService.switchTheme("vela-blue");
-      console.log("false")
-      console.log("The theme:" + this.themeService.switchTheme("vela-blue"))
-    }
+  onThemeChange(theme: string): void {
+    this.selectedTheme = theme;
+    this.themeService.setTheme(theme);
   }
+
+  // changeTheme(event: any) {
+  //   console.log("changeTheme get triggered")
+  //   //const newCheckedState = event.checked;
+  //   //if (newCheckedState !== this.checked) {
+  //     //this.checked = newCheckedState;
+  //     if (this.checked) {
+  //       this.themeService.switchTheme('saga-blue');
+  //     } else {
+  //       this.themeService.switchTheme('vela-blue');
+  //     }
+  //   //}
+  // }
 
   logout() {
     // Perform any logout logic (e.g., clearing user session, etc.)
     // Then navigate to the login page
 
     this.store.dispatch(logout());
+    this.authService.logout();
 
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
   }
   
 }
