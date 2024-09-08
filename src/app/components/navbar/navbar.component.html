@@ -8,9 +8,8 @@
         <i [class]="checked ? 'pi pi-sun' : 'pi pi-moon'"></i>
       </span>           
       <div style="display: inline-block; vertical-align: middle; margin-left: 10px;">
-        <p-inputSwitch class="custom-switch" (onChange)="changeTheme(checked)"></p-inputSwitch>
+        <p-inputSwitch [(ngModel)]="checked" (click)="onThemeChange(checked ? 'light' : 'dark')"></p-inputSwitch>
       </div>
-      <button type="button" (click)="authService.logout()" pButton label="Logout" icon="pi pi-power-off" style="margin-left:.5rem; display: inline-block; vertical-align: middle;"></button>      
     </ng-template>
 </p-menubar>
 
