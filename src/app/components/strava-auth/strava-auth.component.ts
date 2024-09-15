@@ -37,18 +37,6 @@ export class StravaAuthComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //authCode$ = this.store.select(selectAuthCode);
-   // this.accessTokenCheck$ = this.store.select(selectAccessToken);
-    // this.store.select(selectAccessToken).subscribe(accessToken => {
-    //   if (!accessToken) {
-    //     console.log('Access token is null or undefined');
-    //     this.authorized = false;
-    //   } else {
-    //     console.log('Access Token:', accessToken);
-    //     this.authorized = true;
-    //   }
-    // });
-
 
     this.currentRoute.queryParams.pipe(
       tap(params => {
@@ -64,7 +52,6 @@ export class StravaAuthComponent implements OnInit {
       })
     ).subscribe();
 
-    //this.finalizeAuthorization();
   }
 
   finalizeAuthorization(): void {

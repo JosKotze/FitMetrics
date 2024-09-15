@@ -23,7 +23,10 @@ import { HomeComponent } from './home/home.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { appReducers } from './store/app.state';
-import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
+//import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ChartModule } from 'primeng/chart';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
     StravaAuthComponent,
     LoginComponent,
     SignupComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     AppRoutingModule,
@@ -45,12 +49,13 @@ import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
     InputSwitchModule,
     ReactiveFormsModule,
     FormsModule,
-    StoreModule.forRoot(appReducers, { metaReducers }),
+    StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({ maxAge: 5}),
     HttpClientModule,
     CommonModule,
     BrowserModule,
-    ToastModule
+    ToastModule,
+    ChartModule
   ],
   providers: [
     //provideClientHydration(),

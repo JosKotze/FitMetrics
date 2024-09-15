@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 @Injectable({
     providedIn: 'root',
@@ -7,7 +7,7 @@ import { DOCUMENT } from '@angular/common';
 export class ThemeService {
     activeTheme: string = 'dark';
 
-    constructor(@Inject(DOCUMENT) private document: Document) {}
+    constructor(@Inject(DOCUMENT) private document: Document, @Inject(PLATFORM_ID) private platformId: Object) {}
   
     switchTheme(theme: string) {
         let themeLink = document.getElementById('app-theme') as HTMLLinkElement;
@@ -20,14 +20,16 @@ export class ThemeService {
         }
       }
 
-  setTheme(theme: string): void {
-    let themeLink = document.getElementById('app-theme') as HTMLLinkElement;
-
-    if(themeLink){
-      themeLink.href = theme + '.css';
-    }
-    this.activeTheme = theme;
-  }
+      setTheme(theme: string): void {
+        if (isPlatformBrowser(this.platformId)) {
+          const themeLink = document.getElementById('app-theme') as HTMLLinkElement;
+    
+          if (themeLink) {
+            themeLink.href = theme + '.css';
+          }
+          this.activeTheme = theme;
+        }
+      }
   
   getTheme() {
     return this.activeTheme;
