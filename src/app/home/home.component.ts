@@ -33,7 +33,9 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.accessTokenFromLocalStorage = localStorage.getItem('accesstoken');
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.accessTokenFromLocalStorage = localStorage.getItem('accesstoken');
+    }
     if(this.accessTokenFromLocalStorage != null){
       this.store.dispatch(setAccessToken({accessToken: this.accessTokenFromLocalStorage}));
     }

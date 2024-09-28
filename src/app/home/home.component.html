@@ -1,36 +1,43 @@
 <div>
   @if (isStravaAuthorized) {
-  <div style="margin-left: 5%; margin-right: 5%;">
-      <h2>Activities</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Distance</th>
-            <th>Moving Time</th>
-            <th>Elevation Gain</th>
-            <th>Average Heartrate</th>
-            <th>Max Heartrate</th>
-            <th>Average Speed</th>
-            <th>Start Date</th>
-            <th>Sport Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let activity of activities">
-            <td>{{ activity.name }}</td>
-            <td>{{ activity.distance }}</td>
-            <td>{{ activity.movingTime }}</td>
-            <td>{{ activity.totalElevationGain }}</td>
-            <td>{{ activity.averageHeartrate }}</td>
-            <td>{{ activity.maxHeartrate }}</td>
-            <td>{{ activity.pace }}</td>
-            <td>{{ activity.startDate }}</td>
-            <td>{{ activity.type }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <app-dashboard></app-dashboard>
+
+  <div class="ml-6 mr-6">
+  <p-accordion>
+    <p-accordionTab header="Activities">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Distance</th>
+              <th>Moving Time</th>
+              <th>Elevation Gain</th>
+              <th>Average Heartrate</th>
+              <th>Max Heartrate</th>
+              <th>Average Speed</th>
+              <th>Start Date</th>
+              <th>Sport Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let activity of activities">
+              <td>{{ activity.name }}</td>
+              <td>{{ activity.distance }}</td>
+              <td>{{ activity.movingTime }}</td>
+              <td>{{ activity.totalElevationGain }}</td>
+              <td>{{ activity.averageHeartrate }}</td>
+              <td>{{ activity.maxHeartrate }}</td>
+              <td>{{ activity.pace }}</td>
+              <td>{{ activity.startDate }}</td>
+              <td>{{ activity.type }}</td>
+            </tr>
+          </tbody>
+        </table>
+    </p-accordionTab>
+  </p-accordion>
+</div>
+
+  
 }
   
 @if (!isStravaAuthorized) {

@@ -5,6 +5,7 @@ export interface AuthState {
   testData: string | null;
   isAuthenticated: boolean;
   sessionUserEmail: string | null; 
+  athleteProfilePictureUrl: string;
 }
 
 export const initialAuthState: AuthState = {
@@ -12,5 +13,6 @@ export const initialAuthState: AuthState = {
   accessToken: null,
   testData: null,
   isAuthenticated: false,
-  sessionUserEmail: null
+  sessionUserEmail: null,
+  athleteProfilePictureUrl: ''
 };

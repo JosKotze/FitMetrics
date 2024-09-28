@@ -10,6 +10,12 @@ export const setAccessToken = createAction(
     props<{ accessToken: string }>()
   );
 
+  
+export const setAthleteProfilePicture = createAction(
+  '[Auth] Set Athlete Profile Picture',
+  props<{ athleteProfilePictureUrl: string }>()
+);
+
 export const setTestData = createAction(
   '[Auth] Set Test Data',
   props<{ testData: string }>()
