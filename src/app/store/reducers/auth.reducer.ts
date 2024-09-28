@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { setAccessToken, setAuthCode, setloginSuccess, setLogout, setTestData } from '../actions/auth.actions';
+import { setAccessToken, setAthleteProfilePicture, setAuthCode, setloginSuccess, setLogout, setTestData } from '../actions/auth.actions';
 import { initialAuthState } from '../models/auth.model';
 
 
@@ -15,6 +15,10 @@ export const authReducer = createReducer(
   on(setAccessToken, (state, { accessToken }) => {
     console.log('Setting access token:', accessToken);
     return { ...state, accessToken };
+  }),
+  on(setAthleteProfilePicture, (state, { athleteProfilePictureUrl }) => {
+    console.log('Setting access token:', athleteProfilePictureUrl);
+    return { ...state, athleteProfilePictureUrl };
   }),
   on(setTestData, (state, { testData }) => {
     console.log('set test data', testData);

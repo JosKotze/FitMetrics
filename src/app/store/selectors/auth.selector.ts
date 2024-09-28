@@ -27,3 +27,8 @@ export const selectSessionUser = createSelector(
     selectAuthState,
     (state: AuthState) => state.sessionUserEmail
 );
+
+export const selectProfileAvatar = createSelector(
+  selectAuthState,
+  (state: AuthState) => state.athleteProfilePictureUrl
+);

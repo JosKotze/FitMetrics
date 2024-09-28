@@ -21,4 +21,9 @@ export class HomeService {
     // Correct URL path
     return this.http.get<Activity[]>(`${this.apiUrl}/api/Activities/getSavedActivities`);
   }
+
+  getActivitiesByType(type: string, userId: number) {
+    const url = `${this.apiUrl}/api/Activities/geActivitiesByType?type=${type}&userId=${userId}`; // Append userId as a query parameter
+    return this.http.get<Activity[]>(url);
+  }
 }

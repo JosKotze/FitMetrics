@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.state';
-import { setAccessToken, setAuthCode, setTestData } from '../../store/actions/auth.actions';
+import { setAccessToken, setAthleteProfilePicture, setAuthCode, setTestData } from '../../store/actions/auth.actions';
 import { StravaAuthService } from './strava-auth.service';
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { selectAccessToken } from '../../store/selectors/auth.selector';
@@ -52,6 +52,7 @@ export class StravaAuthComponent implements OnInit {
       })
     ).subscribe();
 
+
   }
 
   finalizeAuthorization(): void {
@@ -61,6 +62,7 @@ export class StravaAuthComponent implements OnInit {
           console.log('Access Token: in component', response.access_token);
           if (response.access_token) {
             this.store.dispatch(setAccessToken({ accessToken: response.access_token }));
+            this.store.dispatch(setAthleteProfilePicture({ athleteProfilePictureUrl: response.athlete.profile}))
             this.authService.updateAccessTokenLocalStorage(response.access_token);
             this.successMessage = 'Successfully authorized'
             this.authorized = true;

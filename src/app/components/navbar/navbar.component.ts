@@ -8,6 +8,8 @@ import { ThemeService } from '../../services/theme/theme.service';
 import { Store } from '@ngrx/store';
 import { logout } from '../../store/actions/session.actions';
 import { AuthService } from '../../services/auth/auth.service';
+import { selectProfileAvatar } from '../../store/selectors/auth.selector';
+import { Observable, of } from 'rxjs';
 
 
 @Component({
@@ -20,13 +22,15 @@ export class NavbarComponent {
   authService = inject(AuthService);
   checked: boolean = false;
   selectedTheme: string = 'dark';
+  profileAvatar: Observable<string> = of(''); 
 
   constructor(private router: Router,
     private themeService: ThemeService, private store: Store) {}
 
   ngOnInit(): void {
+    this.profileAvatar = this.store.select(selectProfileAvatar);
     this.themeService.setTheme(this.selectedTheme);
-
+    
     this.items = [
       {
         label: 'Home',
@@ -34,13 +38,8 @@ export class NavbarComponent {
         routerLink: '/'
       },
       {
-        label: 'Activities Data',
-        icon: 'pi pi-fw pi-cog',
-        routerLink: '/invalidTest'
-      },
-      {
         label: 'Activities to Excel',
-        icon: 'pi pi-fw pi-envelope',
+        icon: 'pi pi-fw pi-file-excel',
         routerLink: ''
       },
       {

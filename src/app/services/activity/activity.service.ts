@@ -19,4 +19,6 @@ export class ActivityService {
         const url = `${this.apiUrl}/syncActivitiesFromStrava`; // Sync endpoint URL
         return this.http.post(url, { accessToken }); // Sending accessToken in the request body
     }
+
+    
 }

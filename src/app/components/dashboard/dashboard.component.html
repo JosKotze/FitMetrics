@@ -1,9 +1,57 @@
 <div class="p-5 align-items-center">
+    <p-card header="Last Activity" subheader="Title">
+        <div class="flex">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia doloremque neque, reiciendis eos iure delectus. Assumenda ducimus distinctio eum consectetur perferendis, neque provident, numquam adipisci voluptatum saepe culpa facere doloribus!</p>
+        </div>
+        <ng-template pTemplate="footer">
+            <div class="flex">
+                <div class="flex flex-column">
+                    <h4>Max Heartrate</h4>
+                    <p>180</p>
+                </div>
+                <div class="flex flex-column">
+                    <h4>Avg Heartrate</h4>
+                    <p>167</p>
+                </div>
+            </div>
+        </ng-template>
+    </p-card>
     <h1>Dashboard</h1>
-    
-    <div class="border-round bg-primary-100 w-50rem p-3 m-3">
-        <p-chart type="line" [data]="data" [options]="options"></p-chart>
+
+    <div class="flex flex-column">
+        <div class="flex align-items-center justify-content-center font-bold m-2 h-auto">
+            <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
+                <div class="ml-3">
+                  <h3>Run</h3>
+                  <p-chart type="line" [data]="data['Run']" [options]="options['Run']"></p-chart>
+                </div>
+              </div>
+              <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
+                <div class="ml-3">
+                  <h3>Ride</h3>
+                  <p-chart type="line" [data]="data['Ride']" [options]="options['Ride']"></p-chart>
+                </div>
+              </div>
+            </div>
+        <div class="flex align-items-center justify-content-center font-bold border-round m-2 h-auto">
+            <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
+                <div class="ml-3">
+                    <h3>Swim</h3>
+                    <p-chart type="line" [data]="data['Swim']" [options]="options['Swim']"></p-chart>
+                </div>
+            </div>
+            <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
+                <div class="ml-3">
+                    <h3>Hike</h3>
+                    <p-chart type="line" [data]="data['Hike']" [options]="options['Hike']"></p-chart>
+                </div>
+            </div>
+        </div>
     </div>
+    
+    <!-- <div class="border-round bg-primary-100 w-50rem p-3 m-3">
+        <p-chart type="line" [data]="data" [options]="options"></p-chart>
+    </div> -->
 
     <!-- <div class="border-round bg-primary-100 w-50rem p-3 m-3">
         <p-chart type="doughnut" [data]="data" [options]="options" />

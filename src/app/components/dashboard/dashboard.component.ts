@@ -10,70 +10,77 @@ import { HomeService } from '../../home/home.service';
 export class DashboardComponent implements OnInit{
   homeService = inject(HomeService);
   responseMessage: string = '';
-  activities: Activity[] = [];
+  //activities: Activity[] = [];
 
-  data: any;
-  options: any;
+
+  runActivities: Activity[] = [];
+  rideActivities: Activity[] = [];
+  swimActivities: Activity[] = [];
+  hikeActivities: Activity[] = [];
+  
+  userId: number = 1; //Hard coded for now
+
+  data: any = {};
+  options: any = {};
 
   ngOnInit(): void {
-    this.homeService.getSavedActivities().subscribe(
-      (activities: Activity[]) => {
-          this.activities = activities;
-          this.updateChartOptions(activities);
-        },
-        (error) => {
-          this.responseMessage = `Error: ${error.message}`;
-        }
-      );
-
+    this.getActivitiesbyType('Run', this.userId, this.runActivities);
+    this.getActivitiesbyType('Ride', this.userId, this.rideActivities);
+    this.getActivitiesbyType('Swim', this.userId, this.swimActivities);
+    this.getActivitiesbyType('Hike', this.userId, this.hikeActivities);
   }
 
-  updateChartOptions(activities: Activity[]): void {
-    // Extract unique activity types
-    const types = Array.from(new Set(activities.map(activity => activity.type)));
+  getActivitiesbyType(type: string, userId: number, activityArray: Activity[]): void {
+    this.homeService.getActivitiesByType(type, userId).subscribe(
+      (activities: Activity[]) => {
+        activityArray.push(...activities); // Update the passed array
+        this.updateChartOptions(activityArray, type);
+      },
+      (error) => {
+        this.responseMessage = `Error: ${error.message}`;
+      }
+    );
+  }
 
-    // Create datasets for each type
-    const datasets = types.map(type => {
-        return {
-            label: type,
-            data: activities
-                .filter(activity => activity.type === type)
-                .map(activity => activity.distance),
-            fill: false,
-            borderColor: this.getRandomNiceColor(),     // Optional: to differentiate datasets visually
-            borderWidth: 1
-        };
-    });
+  updateChartOptions(activities: Activity[], type: string): void {
+    // You can create unique datasets based on the activity type
+    const datasets = [
+      {
+        label: type,
+        data: activities.map(activity => activity.distance), // Use distance as the data point
+        fill: false,
+        borderColor: this.getRandomNiceColor(), // Optional: differentiate visually
+        borderWidth: 1
+      }
+    ];
 
-    // Assuming your data needs labels (e.g., for x-axis) and datasets
-    this.data = {
-        labels: activities.map(activity => activity.startDate), // Assuming 'date' or another appropriate label field for x-axis
-        datasets: datasets
+    this.data[type] = {
+      labels: activities.map(activity => activity.startDate),
+      datasets: datasets
     };
 
-    // Configure chart options
-    this.options = {
-        title: {
-            display: true,
-            text: 'Activity Data',
-            fontSize: 16
+    this.options[type] = {
+      title: {
+        display: true,
+        text: `${type} Activity Data`,
+        fontSize: 16
+      },
+      legend: {
+        position: 'bottom'
+      },
+      scales: {
+        x: {
+          beginAtZero: true
         },
-        legend: {
-            position: 'bottom'
-        },
-        scales: {
-            x: {
-                beginAtZero: true
-            },
-            y: {
-                beginAtZero: true
-            }
+        y: {
+          beginAtZero: true
         }
+      }
     };
 
-    console.log(this.data);
-    console.log(this.options);
-}
+    console.log(this.data[type]);
+    console.log(this.options[type]);
+  }
 
 getRandomNiceColor(): string {
   // Generate a color in HSL format and convert it to hex

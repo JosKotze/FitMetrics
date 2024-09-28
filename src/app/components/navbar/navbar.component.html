@@ -3,12 +3,17 @@
     <ng-template pTemplate="start">
         <h4 style="margin-right: 5px;">Strava2Excel</h4>
     </ng-template>
-    <ng-template pTemplate="end">    
-      <span class="switch-icon" style="display: inline-block; vertical-align: middle;">
-        <i [class]="checked ? 'pi pi-sun' : 'pi pi-moon'"></i>
-      </span>           
-      <div style="display: inline-block; vertical-align: middle; margin-left: 10px;">
-        <p-inputSwitch [(ngModel)]="checked" (click)="onThemeChange(checked ? 'light' : 'dark')"></p-inputSwitch>
+    <ng-template pTemplate="end">              
+      <div style="display: flex; align-items: center; margin-left: 10px;">
+        <div style="margin-right: 10px;">
+          <span class="switch-icon mr-2" style="display: inline-block; vertical-align: middle;">
+            <i [class]="checked ? 'pi pi-sun' : 'pi pi-moon'"></i>
+          </span> 
+          <p-inputSwitch [(ngModel)]="checked" (click)="onThemeChange(checked ? 'light' : 'dark')"></p-inputSwitch>
+        </div>
+        <div>
+          <p-avatar image="https://graph.facebook.com/1826916050863232/picture?height=256&width=256" size="xlarge" shape="circle"></p-avatar>
+        </div>
       </div>
     </ng-template>
 </p-menubar>

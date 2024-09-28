@@ -26,7 +26,9 @@ import { appReducers } from './store/app.state';
 //import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ChartModule } from 'primeng/chart';
-
+import { AccordionModule } from 'primeng/accordion';
+import { AvatarModule } from 'primeng/avatar';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,10 @@ import { ChartModule } from 'primeng/chart';
     CommonModule,
     BrowserModule,
     ToastModule,
-    ChartModule
+    ChartModule,
+    AccordionModule,
+    AvatarModule,
+    CardModule
   ],
   providers: [
     //provideClientHydration(),
