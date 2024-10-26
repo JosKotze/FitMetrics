@@ -29,6 +29,8 @@ import { ChartModule } from 'primeng/chart';
 import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import { CardModule } from 'primeng/card';
     ChartModule,
     AccordionModule,
     AvatarModule,
-    CardModule
+    CardModule,
+    InputTextModule
   ],
   providers: [
     //provideClientHydration(),

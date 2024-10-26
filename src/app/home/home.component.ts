@@ -7,6 +7,7 @@ import { selectAccessToken, selectAuthCode } from '../store/selectors/auth.selec
 import { Activity } from '../api/FitMetricsApi';
 import { HomeService } from './home.service';
 import { setAccessToken } from '../store/actions/auth.actions';
+import { selectStartup } from '../store/selectors/startup.selector';
 
 
 //import { ActivityService } from '../services/activity/activity.service';
@@ -55,24 +56,18 @@ export class HomeComponent implements OnInit {
       this.isStravaAuthorized = true;
 
       // Fetch activities from the service
-      this.homeService.getSavedActivities().subscribe(
-        (activities: Activity[]) => {
-            this.activities = activities;
-          },
-          (error) => {
-            this.responseMessage = `Error: ${error.message}`;
-          }
-        );
-
-      // this.homeService.getActivities(accessToken).subscribe(
+      // this.homeService.getSavedActivities().subscribe(
       //   (activities: Activity[]) => {
-      //     this.activities = activities;
-      //   },
-      //   (error) => {
-      //     this.responseMessage = `Error: ${error.message}`;
-      //   }
-      // );
-      
+      //       this.activities = activities;
+      //     },
+      //     (error) => {
+      //       this.responseMessage = `Error: ${error.message}`;
+      //     }
+      //   );
+
+      this.store.select(selectStartup).subscribe(startup => {
+        console.log('Current startup state:', startup);
+      });
     });
   }
 }

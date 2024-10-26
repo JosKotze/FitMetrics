@@ -1,60 +1,94 @@
-<div class="p-5 align-items-center">
-    <p-card header="Last Activity" subheader="Title">
-        <div class="flex">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia doloremque neque, reiciendis eos iure delectus. Assumenda ducimus distinctio eum consectetur perferendis, neque provident, numquam adipisci voluptatum saepe culpa facere doloribus!</p>
+<div class="flex justify-content-center flex-wrap">
+  <!-- Column 1 -->
+  <div class="flex flex-column align-items-center p-3 w-full md:w-6">
+    <p-card class="m-2 w-full">
+      <ng-template pTemplate="header" class="bg-primary-reverse">
+        <div class="flex justify-content-between flex-wrap px-3">
+          <h1>Last Activity</h1>
+          <p-button label="Sync" class="my-auto"></p-button>
         </div>
-        <ng-template pTemplate="footer">
-            <div class="flex">
-                <div class="flex flex-column">
-                    <h4>Max Heartrate</h4>
-                    <p>180</p>
-                </div>
-                <div class="flex flex-column">
-                    <h4>Avg Heartrate</h4>
-                    <p>167</p>
-                </div>
-            </div>
-        </ng-template>
+        <p class="px-3">{{ latestActivity?.name }}:</p>
+        <div class="flex flex-wrap justify-content-evenly">
+          <div class="p-2 text-center">
+            <h2>Distance 📌</h2>
+            <h1>{{ latestActivity?.distance }} m</h1>
+          </div>
+          <div class="p-2 text-center">
+            <h2>Time ⏱️</h2>
+            <h1>{{ latestActivity?.movingTime }}</h1>
+          </div>
+          <div class="p-2 text-center">
+            <h2>Heartrate 💓</h2>
+            <h1>Max: {{ latestActivity?.maxHeartrate }} bpm</h1>
+            <h1>Avg: {{ latestActivity?.averageHeartrate }} bpm</h1>
+          </div>
+        </div>
+      </ng-template>
+      <p-accordion>
+        <p-accordionTab class="bg-primary-reverse" header="Activities">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Distance</th>
+                <th>Moving Time</th>
+                <th>Elevation Gain</th>
+                <th>Average Heartrate</th>
+                <th>Max Heartrate</th>
+                <th>Average Speed</th>
+                <th>Start Date</th>
+                <th>Sport Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let activity of activities">
+                <td>{{ activity.name }}</td>
+                <td>{{ activity.distance }}</td>
+                <td>{{ activity.movingTime }}</td>
+                <td>{{ activity.totalElevationGain }}</td>
+                <td>{{ activity.averageHeartrate }}</td>
+                <td>{{ activity.maxHeartrate }}</td>
+                <td>{{ activity.pace }}</td>
+                <td>{{ activity.startDate }}</td>
+                <td>{{ activity.type }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </p-accordionTab>
+      </p-accordion>
     </p-card>
-    <h1>Dashboard</h1>
+  </div>
 
-    <div class="flex flex-column">
-        <div class="flex align-items-center justify-content-center font-bold m-2 h-auto">
-            <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
-                <div class="ml-3">
-                  <h3>Run</h3>
-                  <p-chart type="line" [data]="data['Run']" [options]="options['Run']"></p-chart>
-                </div>
-              </div>
-              <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
-                <div class="ml-3">
-                  <h3>Ride</h3>
-                  <p-chart type="line" [data]="data['Ride']" [options]="options['Ride']"></p-chart>
-                </div>
-              </div>
-            </div>
-        <div class="flex align-items-center justify-content-center font-bold border-round m-2 h-auto">
-            <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
-                <div class="ml-3">
-                    <h3>Swim</h3>
-                    <p-chart type="line" [data]="data['Swim']" [options]="options['Swim']"></p-chart>
-                </div>
-            </div>
-            <div class="w-6 h-auto m-2 bg-bluegray-900 border-round">
-                <div class="ml-3">
-                    <h3>Hike</h3>
-                    <p-chart type="line" [data]="data['Hike']" [options]="options['Hike']"></p-chart>
-                </div>
-            </div>
+  <!-- Column 2 -->
+  <div class="flex flex-column align-items-center p-3 w-full md:w-6">
+    <p-card class="m-2 w-full">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between flex-wrap px-3">
+          <h1>Dashboard</h1>
         </div>
-    </div>
-    
-    <!-- <div class="border-round bg-primary-100 w-50rem p-3 m-3">
-        <p-chart type="line" [data]="data" [options]="options"></p-chart>
-    </div> -->
-
-    <!-- <div class="border-round bg-primary-100 w-50rem p-3 m-3">
-        <p-chart type="doughnut" [data]="data" [options]="options" />
-    </div> -->
+        <div class="flex flex-wrap justify-content-evenly">
+          <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
+            <h3>Run</h3>
+            <p-chart type="line" [data]="data['Run']" [options]="options['Run']"></p-chart>
+          </div>
+          <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
+            <h3>Ride</h3>
+            <p-chart type="line" [data]="data['Ride']" [options]="options['Ride']"></p-chart>
+          </div>
+          <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
+            <h3>Swim</h3>
+            <p-chart type="line" [data]="data['Swim']" [options]="options['Swim']"></p-chart>
+          </div>
+          <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
+            <h3>Hike</h3>
+            <p-chart type="line" [data]="data['Hike']" [options]="options['Hike']"></p-chart>
+          </div>
+          <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 90%; max-width: 100%;">
+            <h3>Workout</h3>
+            <p-chart type="line" [data]="data['Workout']" [options]="options['Workout']"></p-chart>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
 </div>
-  
