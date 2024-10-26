@@ -5,8 +5,9 @@ import { AuthService } from '../../services/auth/auth.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loginSuccess } from '../../store/actions/session.actions';
 import { setloginSuccess } from '../../store/actions/auth.actions';
+import { User } from '../../models/User';
+import { setStartupData } from '../../store/actions/startup.actions';
 
 @Component({
   selector: 'app-login',
@@ -48,14 +49,27 @@ export class LoginComponent {
 
   login() {
     this.authService.login(this.model).subscribe({
-      next: _ => {
-        this.router.navigateByUrl('/');
-      },
-      error: err => {
-        this.showMessage('error', err.error);
-      }
+        next: (user: User | null) => { // Explicitly type the user parameter
+            if (user) {
+                const startupData = {
+                    userId: user.userId,
+                    userName: user.userName,
+                    accessToken: user.token
+                };
+
+                // Dispatch action to set startup data
+                this.store.dispatch(setStartupData({ startup: startupData }));
+                
+                // Navigate to home page
+                this.router.navigateByUrl('/');
+            }
+        },
+        error: err => {
+            this.showMessage('error', err.error);
+        }
     });
   }
+
 
 
   extractErrorMessage(error: any): string {

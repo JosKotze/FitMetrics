@@ -26,4 +26,9 @@ export class HomeService {
     const url = `${this.apiUrl}/api/Activities/geActivitiesByType?type=${type}&userId=${userId}`; // Append userId as a query parameter
     return this.http.get<Activity[]>(url);
   }
+
+  getLatestActivity(userId: number){
+    const url = `${this.apiUrl}/api/Activities/getLatestActivity?userId=${userId}`; // Append userId as a query parameter
+    return this.http.get<Activity>(url);
+  }
 }

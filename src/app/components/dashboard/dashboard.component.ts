@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { Activity } from '../../api/FitMetricsApi';
 import { HomeService } from '../../home/home.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,15 +11,17 @@ import { HomeService } from '../../home/home.service';
 export class DashboardComponent implements OnInit{
   homeService = inject(HomeService);
   responseMessage: string = '';
-  //activities: Activity[] = [];
+  latestActivity?: Activity;
 
+  activities: Activity[] = [];
 
   runActivities: Activity[] = [];
   rideActivities: Activity[] = [];
   swimActivities: Activity[] = [];
   hikeActivities: Activity[] = [];
+  hitActivities: Activity[] = [];
   
-  userId: number = 1; //Hard coded for now
+  userId: number = 1;
 
   data: any = {};
   options: any = {};
@@ -28,12 +31,29 @@ export class DashboardComponent implements OnInit{
     this.getActivitiesbyType('Ride', this.userId, this.rideActivities);
     this.getActivitiesbyType('Swim', this.userId, this.swimActivities);
     this.getActivitiesbyType('Hike', this.userId, this.hikeActivities);
+    this.getActivitiesbyType('Workout', this.userId, this.hitActivities);
+    this.homeService.getLatestActivity(1).subscribe((activity) => {
+      this.latestActivity = activity;
+    });
+
+    this.homeService.getSavedActivities().subscribe(
+      (activities: Activity[]) => {
+          this.activities = activities;
+        },
+        (error) => {
+          this.responseMessage = `Error: ${error.message}`;
+        }
+      );
+  }
+
+  getLatestActivity(userId: number): Observable<Activity> {
+    return this.homeService.getLatestActivity(userId);
   }
 
   getActivitiesbyType(type: string, userId: number, activityArray: Activity[]): void {
     this.homeService.getActivitiesByType(type, userId).subscribe(
       (activities: Activity[]) => {
-        activityArray.push(...activities); // Update the passed array
+        activityArray.push(...activities);
         this.updateChartOptions(activityArray, type);
       },
       (error) => {
@@ -43,13 +63,14 @@ export class DashboardComponent implements OnInit{
   }
 
   updateChartOptions(activities: Activity[], type: string): void {
-    // You can create unique datasets based on the activity type
     const datasets = [
       {
         label: type,
-        data: activities.map(activity => activity.distance), // Use distance as the data point
+        data: activities.map(activity => 
+           activity.type === 'Workout' ? activity.movingTime : activity.distance
+        ),
         fill: false,
-        borderColor: this.getRandomNiceColor(), // Optional: differentiate visually
+        borderColor: this.getRandomNiceColor(),
         borderWidth: 1
       }
     ];
@@ -65,12 +86,15 @@ export class DashboardComponent implements OnInit{
         text: `${type} Activity Data`,
         fontSize: 16
       },
-      legend: {
-        position: 'bottom'
+      plugins: {
+        legend: {
+          display: false
+        }
       },
       scales: {
         x: {
-          beginAtZero: true
+          beginAtZero: true,
+          display: false 
         },
         y: {
           beginAtZero: true
