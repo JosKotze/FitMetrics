@@ -4,7 +4,13 @@
       <ng-template pTemplate="header" class="bg-primary-reverse">
         <div class="flex justify-content-between flex-wrap px-3">
           <h1>Last Activity</h1>
-          <p-button label="Sync" class="my-auto"></p-button>
+          <p-button label="Sync" [disabled]="accessToken === undefined" (click)="syncActivities(userId)" class="my-auto">
+            <p-progressSpinner
+            *ngIf="loading"   
+            styleClass="w-1rem h-1rem"
+            strokeWidth="5"
+            animationDuration="1s"/>
+          </p-button>
         </div>
         <p class="px-3">{{ latestActivity?.name }}:</p>
         <div class="flex flex-wrap justify-content-evenly">

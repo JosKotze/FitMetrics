@@ -1,8 +1,11 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, OnInit, signal, Signal } from '@angular/core';
 import { Activity } from '../../api/FitMetricsApi';
 import { HomeService } from '../../home/home.service';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
+import { Store } from '@ngrx/store';
+import { selectAccessToken } from '../../store/selectors/auth.selector';
+import { MessageService } from 'primeng/api';
 
 interface Years{
   name: string,
@@ -22,9 +25,14 @@ interface Years{
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit{
+  messageService = inject(MessageService);
   homeService = inject(HomeService);
+  store = inject(Store);
   responseMessage: string = '';
   latestActivity?: Activity;
+
+  loading: boolean = false;
+  syncMessage: string | null = null;
 
   selectedYear: number | undefined;
   yearOptions: Years[] | undefined;
@@ -40,11 +48,17 @@ export class DashboardComponent implements OnInit{
   hitActivities: Activity[] = [];
   
   userId: number = 1;
+  accessToken = signal<string | undefined>(undefined);
 
   data: any = {};
   options: any = {};
 
   ngOnInit(): void {
+    this.store.select(selectAccessToken).subscribe(token => {
+      // Remove extra quotes if present
+      this.accessToken.set(token ? token.replace(/"/g, '') : undefined);
+  });
+
     this.first = 1;
     this.rows = 10;
 
@@ -66,6 +80,53 @@ export class DashboardComponent implements OnInit{
 
     this.getPagedActivities(this.first, this.rows);
 
+  }
+
+  // syncActivities(userId: number): void {
+  //   this.loading = true;
+  
+  //   this.homeService.syncActivities(userId, this.accessToken()!).subscribe({
+  //     // next: (response) => {
+  //     //   this.showMessage('success', response);
+  //     //   this.refreshPage();
+  //     // },
+  //     error: (error) => {
+  //       this.showMessage('error', error.message);
+  //       this.loading = false; // Stop the spinner on error
+  //     },
+  //     complete: () => {
+  //       console.log('complete')
+  //       this.loading = false; // Stop the spinner on completion
+  //       this.showMessage('', 'Sync complete');
+  //       this.refreshPage();
+  //     },
+  //   });
+  // }
+
+  // Inside your component class
+  syncActivities(userId: number): void {
+    this.loading = true; // Start the spinner
+
+    this.homeService.syncActivities(userId, this.accessToken()!).subscribe({
+      next: (response) => {
+        this.showMessage('success', 'Sync complete');
+        this.loading = false; // Stop the spinner
+        this.refreshPage();
+      },
+      error: (error) => {
+        this.showMessage('error', error.message);
+        this.loading = false; // Stop the spinner on error
+      },
+      complete: () => {
+        console.log('Sync complete');
+        this.loading = false; // Ensure spinner stops
+      }
+    });
+  }
+
+  refreshPage(): void {
+    console.log('Refresh')
+    window.location.reload();
   }
 
   getPagedActivities(pageNumber: number, pageSize: number) {
@@ -183,5 +244,11 @@ getRandomNiceColor(): string {
   return rgbToHex(r, g, b);
 }
 
+showMessage(severity: string, message: string) {
+  this.messageService.add({ key: 'confirm', sticky: true, severity, summary: message });
+  setTimeout(() => {
+    this.messageService.clear('confirm');
+  }, 3000); // Clear message after 3 seconds
+}
 
 }
