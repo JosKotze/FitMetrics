@@ -2,6 +2,19 @@ import { Component, inject, OnInit, Signal } from '@angular/core';
 import { Activity } from '../../api/FitMetricsApi';
 import { HomeService } from '../../home/home.service';
 import { Observable } from 'rxjs';
+import { PaginatorState } from 'primeng/paginator';
+
+interface Years{
+  name: string,
+  value: number
+}
+
+// interface PageEvent {
+//   first: number;
+//   rows: number;
+//   page: number;
+//   pageCount: number;
+// }
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +26,12 @@ export class DashboardComponent implements OnInit{
   responseMessage: string = '';
   latestActivity?: Activity;
 
+  selectedYear: number | undefined;
+  yearOptions: Years[] | undefined;
+
   activities: Activity[] = [];
+  first?: number;
+  rows?: number;
 
   runActivities: Activity[] = [];
   rideActivities: Activity[] = [];
@@ -27,6 +45,16 @@ export class DashboardComponent implements OnInit{
   options: any = {};
 
   ngOnInit(): void {
+    this.first = 1;
+    this.rows = 10;
+
+    this.yearOptions = [
+      { name: '2024', value: 2024},
+      { name: '2023', value: 2023},
+      { name: '2022', value: 2022},
+      { name: '2021', value: 2021},
+
+    ]
     this.getActivitiesbyType('Run', this.userId, this.runActivities);
     this.getActivitiesbyType('Ride', this.userId, this.rideActivities);
     this.getActivitiesbyType('Swim', this.userId, this.swimActivities);
@@ -36,14 +64,18 @@ export class DashboardComponent implements OnInit{
       this.latestActivity = activity;
     });
 
-    this.homeService.getSavedActivities().subscribe(
-      (activities: Activity[]) => {
-          this.activities = activities;
-        },
-        (error) => {
-          this.responseMessage = `Error: ${error.message}`;
-        }
-      );
+    this.getPagedActivities(this.first, this.rows);
+
+  }
+
+  getPagedActivities(pageNumber: number, pageSize: number) {
+    this.homeService.getPagedActivities(pageNumber, pageSize);
+  }
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first ?? 0;
+    this.rows = event.rows ?? 10;
+    this.getPagedActivities(this.first, this.rows);
   }
 
   getLatestActivity(userId: number): Observable<Activity> {

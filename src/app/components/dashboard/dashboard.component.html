@@ -1,5 +1,4 @@
 <div class="flex justify-content-center flex-wrap">
-  <!-- Column 1 -->
   <div class="flex flex-column align-items-center p-3 w-full md:w-6">
     <p-card class="m-2 w-full">
       <ng-template pTemplate="header" class="bg-primary-reverse">
@@ -26,65 +25,77 @@
       </ng-template>
       <p-accordion>
         <p-accordionTab class="bg-primary-reverse" header="Activities">
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Distance</th>
-                <th>Moving Time</th>
-                <th>Elevation Gain</th>
-                <th>Average Heartrate</th>
-                <th>Max Heartrate</th>
-                <th>Average Speed</th>
-                <th>Start Date</th>
-                <th>Sport Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let activity of activities">
-                <td>{{ activity.name }}</td>
-                <td>{{ activity.distance }}</td>
-                <td>{{ activity.movingTime }}</td>
-                <td>{{ activity.totalElevationGain }}</td>
-                <td>{{ activity.averageHeartrate }}</td>
-                <td>{{ activity.maxHeartrate }}</td>
-                <td>{{ activity.pace }}</td>
-                <td>{{ activity.startDate }}</td>
-                <td>{{ activity.type }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="flex justify-content-center">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Distance</th>
+                  <th>Moving Time</th>
+                  <th>Elevation Gain</th>
+                  <th>Average Heartrate</th>
+                  <th>Max Heartrate</th>
+                  <th>Average Speed</th>
+                  <th>Start Date</th>
+                  <th>Sport Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let activity of homeService.paginatedResult()?.items">
+                  <td>{{ activity.name }}</td>
+                  <td>{{ activity.distance }}</td>
+                  <td>{{ activity.movingTime }}</td>
+                  <td>{{ activity.totalElevationGain }}</td>
+                  <td>{{ activity.averageHeartrate }}</td>
+                  <td>{{ activity.maxHeartrate }}</td>
+                  <td>{{ activity.pace }}</td>
+                  <td>{{ activity.startDate }}</td>
+                  <td>{{ activity.type }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p-paginator 
+              (onPageChange)="onPageChange($event)" 
+              [first]="first!" 
+              [rows]="rows!" 
+              [totalRecords]="homeService.paginatedResult()?.pagination!.totalItems" 
+               />
         </p-accordionTab>
       </p-accordion>
     </p-card>
   </div>
 
-  <!-- Column 2 -->
   <div class="flex flex-column align-items-center p-3 w-full md:w-6">
     <p-card class="m-2 w-full">
       <ng-template pTemplate="header">
         <div class="flex justify-content-between flex-wrap px-3">
           <h1>Dashboard</h1>
+          <p-dropdown class="mt-3"
+            [options]="yearOptions" 
+            [(ngModel)]="selectedYear" 
+            optionLabel="name"
+            placeholder="Year" />
         </div>
         <div class="flex flex-wrap justify-content-evenly">
           <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
-            <h3>Run</h3>
+            <h3 class="m-2">Run</h3>
             <p-chart type="line" [data]="data['Run']" [options]="options['Run']"></p-chart>
           </div>
           <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
-            <h3>Ride</h3>
+            <h3 class="m-2">Ride</h3>
             <p-chart type="line" [data]="data['Ride']" [options]="options['Ride']"></p-chart>
           </div>
           <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
-            <h3>Swim</h3>
+            <h3 class="m-2">Swim</h3>
             <p-chart type="line" [data]="data['Swim']" [options]="options['Swim']"></p-chart>
           </div>
           <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 45%; max-width: 100%;">
-            <h3>Hike</h3>
+            <h3 class="m-2">Hike</h3>
             <p-chart type="line" [data]="data['Hike']" [options]="options['Hike']"></p-chart>
           </div>
           <div class="p-2 bg-primary-reverse border-round m-2" style="flex: 1 1 90%; max-width: 100%;">
-            <h3>Workout</h3>
+            <h3 class="m-2">Workout</h3>
             <p-chart type="line" [data]="data['Workout']" [options]="options['Workout']"></p-chart>
           </div>
         </div>
