@@ -31,6 +31,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { PaginatorModule } from 'primeng/paginator';
     AvatarModule,
     CardModule,
     InputTextModule,
-    PaginatorModule
+    PaginatorModule,
+    ProgressSpinnerModule
   ],
   providers: [
     //provideClientHydration(),

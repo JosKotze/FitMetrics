@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../constants/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Activity } from '../api/FitMetricsApi';
 import { PaginatedResult } from '../models/pagination';
 import { response } from 'express';
@@ -14,6 +14,26 @@ export class HomeService {
   paginatedResult = signal<PaginatedResult<Activity[]> | null>(null);
 
   constructor(private http: HttpClient) { }
+//https://localhost:7279/api/Activities/syncActivities?userId=1&accessToken=%221f590d15f92267e707441065a616dddf07c27ca7%22
+//https://localhost:7279/api/Activities/syncActivities?userId=1&accessToken=1f590d15f92267e707441065a616dddf07c27ca7
+  
+  // syncActivities(userId: number, accessToken: string): Observable<string> {    
+  //   return this.http.get<string>(`${this.apiUrl}/api/Activities/syncActivities?userId=${userId}&accessToken=${accessToken}`);
+  // }
+// Inside your service class
+syncActivities(userId: number, accessToken: string): Observable<any> {
+  console.log('Service call started');
+  return this.http.get<string>(`https://localhost:7279/api/Activities/syncActivities?userId=${userId}&accessToken=${accessToken}`, { responseType: 'text' as 'json' })
+    .pipe(
+      tap(() => console.log('Service call successful')),
+      catchError((error) => {
+        console.error('Service call failed', error);
+        return throwError(error);
+      })
+    );
+}
+
+
 
   getPagedActivities(pageNumber: number, pageSize: number) {
     let params = new HttpParams()
@@ -43,7 +63,7 @@ export class HomeService {
   }
 
   getActivitiesByType(type: string, userId: number) {
-    const url = `${this.apiUrl}/api/Activities/geActivitiesByType?type=${type}&userId=${userId}`; // Append userId as a query parameter
+    const url = `${this.apiUrl}/api/Activities/getActivitiesByType?type=${type}&userId=${userId}`; // Append userId as a query parameter
     return this.http.get<Activity[]>(url);
   }
 
