@@ -30,7 +30,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [
@@ -63,7 +63,8 @@ import { InputTextModule } from 'primeng/inputtext';
     AccordionModule,
     AvatarModule,
     CardModule,
-    InputTextModule
+    InputTextModule,
+    PaginatorModule
   ],
   providers: [
     //provideClientHydration(),
