@@ -70,8 +70,6 @@ export class LoginComponent {
     });
   }
 
-
-
   extractErrorMessage(error: any): string {
     // Check if error.error contains a message property
     if (error.error && typeof error.error === 'object' && error.error.message) {

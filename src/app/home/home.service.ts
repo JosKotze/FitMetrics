@@ -62,6 +62,11 @@ syncActivities(userId: number, accessToken: string): Observable<any> {
     return this.http.get<Activity[]>(`${this.apiUrl}/api/Activities/getSavedActivities`);
   }
 
+  getActivitiesByTypeByYear(year: number, type: string, userId: number){
+    const url = `${this.apiUrl}/api/Activities/getActivityByTypeByYear?year=${year}&type=${type}&userId=${userId}`; // Append userId as a query parameter
+    return this.http.get<Activity[]>(url);
+  }
+
   getActivitiesByType(type: string, userId: number) {
     const url = `${this.apiUrl}/api/Activities/getActivitiesByType?type=${type}&userId=${userId}`; // Append userId as a query parameter
     return this.http.get<Activity[]>(url);

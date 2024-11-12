@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.state';
-import { setAccessToken, setAthleteProfilePicture, setAuthCode, setTestData } from '../../store/actions/auth.actions';
+import { setAccessToken, setAthleteProfilePicture, setAuthCode, setStravaUserAuthDetails, setTestData } from '../../store/actions/auth.actions';
 import { StravaAuthService } from './strava-auth.service';
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { selectAccessToken } from '../../store/selectors/auth.selector';
@@ -15,10 +15,12 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./strava-auth.component.scss']
 })
 export class StravaAuthComponent implements OnInit {
+  //112649
+  //3d7ddf466da42cfe4771c371221025eaa06d3f5d
 
   notAuthFormGroup = new FormGroup({
-    clientId: new FormControl<string>('112649'), // Set default value
-    clientSecret: new FormControl<string>('3d7ddf466da42cfe4771c371221025eaa06d3f5d') // Set default value
+    clientId: new FormControl<string | null>(null), // Set default value
+    clientSecret: new FormControl<string | null>(null) // Set default value
   });
 
   redirectUri: string = 'http://localhost:4200/stravaAuth';
@@ -83,5 +85,6 @@ export class StravaAuthComponent implements OnInit {
     const authorizationUrl = `https://www.strava.com/oauth/authorize?client_id=${this.notAuthFormGroup.controls.clientId.value}&redirect_uri=${this.redirectUri}&response_type=code&scope=activity:read_all`;
     console.log(authorizationUrl);
     window.location.href = authorizationUrl;
+    this.store.dispatch(setStravaUserAuthDetails({ clientId: this.notAuthFormGroup.controls.clientId.value, clientSecret: this.notAuthFormGroup.controls.clientId.value}))
   }
 }

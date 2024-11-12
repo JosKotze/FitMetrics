@@ -32,6 +32,7 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     CardModule,
     InputTextModule,
     PaginatorModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    TableModule,
   ],
   providers: [
     //provideClientHydration(),
