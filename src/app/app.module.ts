@@ -33,6 +33,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
+import { MapDetailComponent } from './components/map-detail/map-detail.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { TableModule } from 'primeng/table';
     LoginComponent,
     SignupComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    MapDetailComponent
   ],
   imports: [
     AppRoutingModule,
