@@ -21,7 +21,7 @@ export class MapDetailComponent implements OnInit {
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [20.14, -34.78],
+      center: [20.04857, -34.80712],
       zoom: 14
     });
 
@@ -56,8 +56,8 @@ export class MapDetailComponent implements OnInit {
           'line-cap': 'round'
         },
         'paint': {
-          'line-color': '#888',
-          'line-width': 8
+          'line-color': '#673ab7',
+          'line-width': 5
         }
       });
     });
