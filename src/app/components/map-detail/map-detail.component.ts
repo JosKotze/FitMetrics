@@ -21,15 +21,18 @@ export class MapDetailComponent implements OnInit {
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-122.486052, 37.830348],
+      center: [20.14, -34.78],
       zoom: 14
     });
 
     map.on('load', () => {
       // Decode the polyline to get coordinates
-      const polylineString = 'pylsEkekyBLKRc@Z{@ZqALWJCx@FLCFWLcADoANaBPq@NUTS^MXEZ@b@JpA`ANHH?FErAwBv@{BDUCIGGsDqA_Ae@u@WWOIOK]?q@VuEDmBDs@BiAL{DEc@KIMEy@?wAK}@AGCEKM_BaA}DiAgEMQUS[OoA}@IEOCOBSFqB|@q@`@SVy@rAyAdDaAnCYfAMz@AZ?fCDt@JZLRzBjBFPCJOTm@j@m@t@OJKCGG}A}Aa@Ii@Ce@WVDj@TNJFLAPqA|BoArBcCxIOx@@ZHRPLx@\\FL@LCVIPIb@_B~Fw@zCBPDDdA`@^n@BR@RGp@w@dDKLEBIAWGsAm@KAIFkAfEo@dB_@|@w@vA]h@iAxAu@fAeDhEEPFRjAvAHN@PGf@S`@gB|BUd@U\\wChDMRITGpA\\`ADx@DLXRp@T`@?THFDHRFDV@z@EzBAlDG|DAbCE^Fh@ZbAv@rCnBxElDbBhA~@f@RPp@`@dBjApAz@ZXrA~@dC|A`@\\t@f@\\LlBNt@JzALFADGBOCuIB_@H]HMRQvCyA|CmB\\YP]l@yBHm@?eAHWPMtAGZMHOb@sATg@ROv@GPKLUn@cBTe@HMNIlAOH?FDF\\Hr@PbD?`@H`CBlBDrA@|@FbA?RDfACDEOEi@QwHIeA@gAKwCaAaLOqAYcD?UHa@KQ]_@Ym@CO?UZcABa@OkFK_BIu@Ok@M_@qD_Ic@kA[_CUmEw@gGKeAImAEYGGYOgA_@oAm@gBm@cDuAOIU]G]LoCCKEEa@Cm@BOCeACgBBMBEJBPZhAF\\A^GPaAd@_@LuCzAUVq@b@W^k@dAi@pAKd@?RJLl@Rx@j@f@Rj@b@tFdDVXHN@H'; // truncated for brevity
+      const polylineString = '|ylsEqekyBBALKDIVgAHILeAL[FEPAz@LHDFHBRCd@?bAJhAJn@?PIRk@`@[XYb@KVCH?JxDpBrBlAd@TxA`AbEzC~@v@fEbDbAz@fCjBdBhBnDpEhBvBTJp@@JJF^AvASpDK~@IlAA|@@h@rAjPb@zFL|BRlEAzAK~CQjDOvBMtCA|@DdAXhA`@v@RVp@l@~AhAv@d@zApA~DjEnAlARVBDiAmAe@c@}AiB_@][a@i@g@cAy@yCkB_@Y[]]e@]q@Ma@Km@EoB`@yGVgFF{B?oAQiEWiEs@iJi@aGQeC@iA@c@Fu@L}@NuC@gAMUG_@IKKC]ASKKIeDyDmCgDeA_AeDgCw@q@yEsDoAcAwBaBaBiAoGoD[_@c@_@EGASD]h@q@RSf@]DIAKMe@O_AEcAB{@CIEGIEe@ESAG@EFENWtAMT';
       const coordinates = polyline.decode(polylineString);
+      const swappedCoordinates = coordinates.map(coord => [coord[1], coord[0]]);
 
+
+      console.log(coordinates);
       // Add the polyline as a GeoJSON source
       map.addSource('route', {
         'type': 'geojson',
@@ -38,7 +41,7 @@ export class MapDetailComponent implements OnInit {
           'properties': {},
           'geometry': {
             'type': 'LineString',
-            'coordinates': coordinates
+            'coordinates': swappedCoordinates
           }
         }
       });
