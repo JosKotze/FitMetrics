@@ -6,6 +6,7 @@ import { PaginatorState } from 'primeng/paginator';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from '../../store/selectors/auth.selector';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 interface Year{
   name: string,
@@ -28,6 +29,7 @@ export class DashboardComponent implements OnInit{
   messageService = inject(MessageService);
   homeService = inject(HomeService);
   store = inject(Store);
+  router = inject(Router);
   responseMessage: string = '';
   latestActivity?: Activity;
 
@@ -76,6 +78,15 @@ export class DashboardComponent implements OnInit{
     this.loadChartOptions();
     this.getPagedActivities(this.first, this.rows);
 
+  }
+
+  selectedActivity: any;
+
+  onRowClick(activity: any): void {
+    if (activity?.id) {
+      console.log(activity.activityId)
+      this.router.navigate(['/map-detail', 1, activity.activityId]);
+    }
   }
 
   loadChartOptions(): void {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Map } from '../../models/Map';
 
 
 @Injectable({
@@ -20,5 +21,16 @@ export class ActivityService {
         return this.http.post(url, { accessToken }); // Sending accessToken in the request body
     }
 
+    saveActivityMap(accessToken: string, activityId: number, userId: number) {
+      const url = `${this.apiUrl}/saveActivityMap`;
+      const body = { accessToken, activityId, userId };
+      return this.http.post(url, body);
+    }
+    
+    getActivityMap(activityId: number, userId: number) {
+      const url = `${this.apiUrl}/getActivityMap`;
+      const params = { activityId: activityId.toString(), userId: userId.toString() }; // Ensure values are strings
+      return this.http.get<Map>(url, { params });
+    }
     
 }

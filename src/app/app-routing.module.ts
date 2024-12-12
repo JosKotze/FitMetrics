@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MapDetailComponent } from './components/map-detail/map-detail.component';
+import { mapResolver } from './components/map-detail/map-resolver.resolver';
 
 
 const routes: Routes = [
@@ -15,7 +16,13 @@ const routes: Routes = [
   { path: '', component: HomeComponent }, // Protected route
   { path: 'register', component: RegisterComponent }, // Protected route
   { path: 'stravaAuth', component: StravaAuthComponent }, // Protected route
-  { path: 'mapDetail', component: MapDetailComponent},
+  {
+    path: 'map-detail/:userId/:activityId',
+    component: MapDetailComponent,
+    resolve: {
+      mapData: mapResolver
+    }
+  },
   { path: '**', redirectTo: '' }, // Redirect any unknown paths to home
 ];
 

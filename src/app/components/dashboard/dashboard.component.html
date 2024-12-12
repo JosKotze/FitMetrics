@@ -32,7 +32,8 @@
       <p-accordion>
         <p-accordionTab class="bg-primary-reverse" header="Activities">
           <div class="flex justify-content-center">
-            <p-table [value]="homeService.paginatedResult()?.items || []" class="overflow-hidden" styleClass="p-datatable-striped p-datatable-sm ">
+            <p-table [value]="homeService.paginatedResult()?.items || []" class="overflow-hidden" styleClass="p-datatable-striped p-datatable-sm"
+                      selectionMode="single" [(selection)]="selectedActivity">
               <ng-template pTemplate="header">
                 <tr>
                   <th>Name</th>
@@ -48,7 +49,7 @@
               </ng-template>
             
               <ng-template pTemplate="body" let-activity>
-                <tr style="max-hight:15rem">
+                <tr (click)="onRowClick(activity)" style="max-hight:15rem">
                   <td>{{ activity.name }}</td>
                   <td>{{ activity.distance }}</td>
                   <td>{{ activity.movingTime }}</td>

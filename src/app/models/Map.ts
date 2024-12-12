@@ -1,7 +1,11 @@
 export class Map {
     constructor(
-        public id: string,
-        public summary_polyline: string,
-        public resource_state: number
+        public id: number, 
+        public mapId: string | null,
+        public activityId: number, 
+        public userId: number,
+        public polyline: string | null, 
+        public startLatlng: number[] | null, 
+        public endLatlng: number[] | null
     ) {}
 }
