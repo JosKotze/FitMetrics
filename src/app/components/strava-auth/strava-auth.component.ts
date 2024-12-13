@@ -6,7 +6,6 @@ import { AppState } from '../../store/app.state';
 import { setAccessToken, setAthleteProfilePicture, setAuthCode, setStravaUserAuthDetails, setTestData } from '../../store/actions/auth.actions';
 import { StravaAuthService } from './strava-auth.service';
 import { catchError, Observable, of, switchMap, tap } from 'rxjs';
-import { selectAccessToken } from '../../store/selectors/auth.selector';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({

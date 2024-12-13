@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Map } from '../../models/Map';
 
@@ -8,7 +8,7 @@ import { Map } from '../../models/Map';
   providedIn: 'root'
 })
 export class ActivityService {
-    private apiUrl = 'https://localhost:7279/api/';
+    private apiUrl = 'https://localhost:7279/api';
   constructor(private http: HttpClient) { }
 
 //   getActivities(authCode: string): Observable<Activity[]> {
@@ -26,11 +26,16 @@ export class ActivityService {
       const body = { accessToken, activityId, userId };
       return this.http.post(url, body);
     }
+
+    getActivityMap(accessToken: string, userId: number, activityId: number): Observable<Map> {
+      const url = `https://localhost:7279/api/Activities/getActivityMap`;
     
-    getActivityMap(activityId: number, userId: number) {
-      const url = `${this.apiUrl}/getActivityMap`;
-      const params = { activityId: activityId.toString(), userId: userId.toString() }; // Ensure values are strings
-      return this.http.get<Map>(url, { params });
-    }
+      const requestBody = {
+        accessToken: accessToken,
+        userId: userId,
+        activityId: activityId
+      };
     
+      return this.http.post<Map>(url, requestBody);
+    }  
 }

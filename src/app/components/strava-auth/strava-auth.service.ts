@@ -3,9 +3,6 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { catchError, concatMap, Observable, switchMap, tap, throwError } from 'rxjs';
 import { AppState } from '../../store/app.state';
-import { setAccessToken } from '../../store/actions/auth.actions';
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +11,6 @@ export class StravaAuthService {
   private clientId = '112649';
   private clientSecret = '3d7ddf466da42cfe4771c371221025eaa06d3f5d';
   private redirectUri = 'http://localhost:4200/stravaAuth';
-  accessToken = '';
-
 
   constructor(private http: HttpClient, private store: Store<AppState>) { }
 

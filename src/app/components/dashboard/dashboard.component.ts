@@ -83,9 +83,11 @@ export class DashboardComponent implements OnInit{
   selectedActivity: any;
 
   onRowClick(activity: any): void {
-    if (activity?.id) {
-      console.log(activity.activityId)
-      this.router.navigate(['/map-detail', 1, activity.activityId]);
+    if (activity?.id && this.userId) {
+      console.log(activity.activityId);
+      this.router.navigate(['/map-detail', this.userId, activity.activityId]);
+    } else {
+      console.error('User ID or Activity ID is missing');
     }
   }
 
