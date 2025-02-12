@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit{
   syncMessage: string | null = null;
 
 
-  selectedYear: Year = {name: '2024', value: 2024};
+  selectedYear: Year = {name: '2025', value: 2025};
   yearOptions: Year[] | undefined;
 
   activities: Activity[] = [];
@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit{
   swimActivities: Activity[] = [];
   hikeActivities: Activity[] = [];
   hitActivities: Activity[] = [];
+  surfActivities: Activity[] = [];
   
   userId: number = 1;
   accessToken = signal<string | undefined>(undefined);
@@ -66,6 +67,7 @@ export class DashboardComponent implements OnInit{
     this.rows = 10;
 
     this.yearOptions = [
+      { name: '2025', value: 2025},
       { name: '2024', value: 2024},
       { name: '2023', value: 2023},
       { name: '2022', value: 2022},
@@ -113,6 +115,9 @@ export class DashboardComponent implements OnInit{
 
     this.hitActivities = [];
     this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Workout', this.userId, this.hitActivities);
+
+    this.surfActivities = [];
+    this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Surfing', this.userId, this.surfActivities);
 
     // this.getActivitiesbyType('Hike', this.userId, this.hikeActivities);
     // this.getActivitiesbyType('Workout', this.userId, this.hitActivities);

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ActivityService } from '../../services/activity/activity.service';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from '../../store/selectors/auth.selector';
+import { Activity } from '../../api/FitMetricsApi';
 
 @Component({
   selector: 'app-map-detail',
@@ -22,11 +23,23 @@ export class MapDetailComponent implements OnInit {
   accessToken = this.store.selectSignal(selectAccessToken);
   activityId = ''
   userId = ''
+  activityDetails: Activity | undefined;
 
   ngOnInit(): void {
     this.activityId = this.route.snapshot.paramMap.get('activityId')!;
     this.userId = this.route.snapshot.paramMap.get('userId')!;
     
+    this.activityService.getActivityById(+this.userId, +this.activityId).subscribe({
+      next: (activty: Activity) => {
+        this.activityDetails = activty;
+      },
+      error: (err) => {
+        console.error('Error fetching activity details:', err);
+      },
+    })
+
+    console.log(this.activityDetails);
+
     const token = this.accessToken();
     if (token) {
       this.activityService.getActivityMap(token, +this.userId, +this.activityId).subscribe({
