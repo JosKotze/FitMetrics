@@ -1,7 +1,10 @@
-export class Map {
-    constructor(
-        public id: string,
-        public summary_polyline: string,
-        public resource_state: number
-    ) {}
-}
+export interface Map {
+    id: number;
+    mapId: string | null;
+    activityId: number;
+    userId: number;
+    polyline: string;
+    startLatlng: number[];
+    endLatlng: number[];  
+  }
+  

@@ -6,6 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { AuthGuard } from './guards/auth.guard';
+import { MapDetailComponent } from './components/map-detail/map-detail.component';
 
 
 const routes: Routes = [
@@ -14,7 +15,8 @@ const routes: Routes = [
   { path: '', component: HomeComponent }, // Protected route
   { path: 'register', component: RegisterComponent }, // Protected route
   { path: 'stravaAuth', component: StravaAuthComponent }, // Protected route
-  { path: '**', redirectTo: '' } // Redirect any unknown paths to home
+  { path: 'map-detail/:userId/:activityId', component: MapDetailComponent },
+  { path: '**', redirectTo: '' }, // Redirect any unknown paths to home
 ];
 
 @NgModule({

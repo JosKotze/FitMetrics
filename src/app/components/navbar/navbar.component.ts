@@ -48,6 +48,11 @@ export class NavbarComponent {
         routerLink: '/stravaAuth'
       },
       {
+        label: 'Map',
+        icon: 'pi pi-map',
+        routerLink: '/mapDetail'
+      },
+      {
         label: 'logout',
         icon: 'pi pi-fw pi-power-off',
         command: () => this.logout()

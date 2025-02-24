@@ -32,6 +32,8 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TableModule } from 'primeng/table';
+import { MapDetailComponent } from './components/map-detail/map-detail.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     LoginComponent,
     SignupComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    MapDetailComponent
   ],
   imports: [
     AppRoutingModule,
@@ -66,7 +69,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     CardModule,
     InputTextModule,
     PaginatorModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    TableModule,
   ],
   providers: [
     //provideClientHydration(),

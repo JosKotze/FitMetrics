@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { setAccessToken, setAthleteProfilePicture, setAuthCode, setloginSuccess, setLogout, setTestData } from '../actions/auth.actions';
+import { setAccessToken, setAthleteProfilePicture, setAuthCode, setloginSuccess, setLogout, setStravaUserAuthDetails, setTestData } from '../actions/auth.actions';
 import { initialAuthState } from '../models/auth.model';
 
 
@@ -31,5 +31,12 @@ export const authReducer = createReducer(
   }),
   on(setLogout, () => {
     return initialAuthState;
-})
+  }),
+  on(setStravaUserAuthDetails, (state, { clientId, clientSecret })=> {
+    return {
+      ...state,
+      stravaClientId: clientId,
+      stravaClientSecret: clientSecret
+    }
+  })
 );

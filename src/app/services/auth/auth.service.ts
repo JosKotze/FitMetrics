@@ -54,7 +54,7 @@ export class AuthService {
 
   updateAccessTokenLocalStorage(accesstoken: string) {
 
-    localStorage.setItem('accesstoken', JSON.stringify(accesstoken));
+    localStorage.setItem('accesstoken', accesstoken);
 
   }
 

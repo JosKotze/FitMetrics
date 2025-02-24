@@ -1,5 +1,7 @@
 
 export interface AuthState {
+  stravaClientId: string | null;
+  stravaClientSecret: string | null;
   authCode: string | null;
   accessToken: string | null;
   testData: string | null;
@@ -9,6 +11,8 @@ export interface AuthState {
 }
 
 export const initialAuthState: AuthState = {
+  stravaClientId: null,
+  stravaClientSecret:  null,
   authCode: null,
   accessToken: null,
   testData: null,

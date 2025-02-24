@@ -6,8 +6,9 @@ import { PaginatorState } from 'primeng/paginator';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from '../../store/selectors/auth.selector';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
-interface Years{
+interface Year{
   name: string,
   value: number
 }
@@ -28,14 +29,16 @@ export class DashboardComponent implements OnInit{
   messageService = inject(MessageService);
   homeService = inject(HomeService);
   store = inject(Store);
+  router = inject(Router);
   responseMessage: string = '';
   latestActivity?: Activity;
 
   loading: boolean = false;
   syncMessage: string | null = null;
 
-  selectedYear: number | undefined;
-  yearOptions: Years[] | undefined;
+
+  selectedYear: Year = {name: '2025', value: 2025};
+  yearOptions: Year[] | undefined;
 
   activities: Activity[] = [];
   first?: number;
@@ -46,6 +49,7 @@ export class DashboardComponent implements OnInit{
   swimActivities: Activity[] = [];
   hikeActivities: Activity[] = [];
   hitActivities: Activity[] = [];
+  surfActivities: Activity[] = [];
   
   userId: number = 1;
   accessToken = signal<string | undefined>(undefined);
@@ -57,29 +61,71 @@ export class DashboardComponent implements OnInit{
     this.store.select(selectAccessToken).subscribe(token => {
       // Remove extra quotes if present
       this.accessToken.set(token ? token.replace(/"/g, '') : undefined);
-  });
+    });
 
     this.first = 1;
     this.rows = 10;
 
     this.yearOptions = [
+      { name: '2025', value: 2025},
       { name: '2024', value: 2024},
       { name: '2023', value: 2023},
       { name: '2022', value: 2022},
       { name: '2021', value: 2021},
-
     ]
-    this.getActivitiesbyType('Run', this.userId, this.runActivities);
-    this.getActivitiesbyType('Ride', this.userId, this.rideActivities);
-    this.getActivitiesbyType('Swim', this.userId, this.swimActivities);
-    this.getActivitiesbyType('Hike', this.userId, this.hikeActivities);
-    this.getActivitiesbyType('Workout', this.userId, this.hitActivities);
+
     this.homeService.getLatestActivity(1).subscribe((activity) => {
       this.latestActivity = activity;
     });
-
+    this.loadChartOptions();
     this.getPagedActivities(this.first, this.rows);
 
+  }
+
+  selectedActivity: any;
+
+  onRowClick(activity: any): void {
+    if (activity?.id && this.userId) {
+      console.log(activity.activityId);
+      this.router.navigate(['/map-detail', this.userId, activity.activityId]);
+    } else {
+      console.error('User ID or Activity ID is missing');
+    }
+  }
+
+  loadChartOptions(): void {
+    // Fetch activities by type for the new selected year and update chart options
+    this.activities = []; // Clear current activities if needed
+  
+    // this.getActivitiesbyType('Run', this.userId, this.runActivities);
+    // this.getActivitiesbyType('Ride', this.userId, this.rideActivities);
+
+    //this.getActivitiesbyType('Swim', this.userId, this.swimActivities);
+    this.runActivities = [];
+    this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Run', this.userId, this.runActivities);
+
+    this.rideActivities = [];
+    this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Ride', this.userId, this.rideActivities);
+
+    this.swimActivities = [];
+    this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Swim', this.userId, this.swimActivities);
+
+    this.hikeActivities = [];
+    this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Hike', this.userId, this.hikeActivities);
+
+    this.hitActivities = [];
+    this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Workout', this.userId, this.hitActivities);
+
+    this.surfActivities = [];
+    this.getActivitiesByTypeByYear(this.selectedYear!.value, 'Surfing', this.userId, this.surfActivities);
+
+    // this.getActivitiesbyType('Hike', this.userId, this.hikeActivities);
+    // this.getActivitiesbyType('Workout', this.userId, this.hitActivities);
+  }
+
+  onYearChange(event: any): void {
+    this.selectedYear = event.value; // Update the selected year
+    this.loadChartOptions();
   }
 
   // syncActivities(userId: number): void {
@@ -134,9 +180,10 @@ export class DashboardComponent implements OnInit{
   }
 
   onPageChange(event: PaginatorState) {
+    console.log(event);
     this.first = event.first ?? 0;
     this.rows = event.rows ?? 10;
-    this.getPagedActivities(this.first, this.rows);
+    this.getPagedActivities(this.first + 1, this.rows);
   }
 
   getLatestActivity(userId: number): Observable<Activity> {
@@ -153,6 +200,18 @@ export class DashboardComponent implements OnInit{
         this.responseMessage = `Error: ${error.message}`;
       }
     );
+  }
+
+  getActivitiesByTypeByYear(year: number, type: string, userId: number, activityArray: Activity[]): void {
+    this.homeService.getActivitiesByTypeByYear(year, type, userId).subscribe(
+      (activities: Activity[]) => {
+        activityArray.push(...activities);
+        this.updateChartOptions(activityArray, type);
+      },
+      (error) => {
+        this.responseMessage = `Error: ${error.message}`;
+      }
+    )
   }
 
   updateChartOptions(activities: Activity[], type: string): void {
