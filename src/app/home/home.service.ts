@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { environment } from '../constants/environment';
+import { environment } from '../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Activity } from '../api/FitMetricsApi';
