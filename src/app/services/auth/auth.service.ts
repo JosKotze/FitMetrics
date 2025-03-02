@@ -31,14 +31,15 @@ export class AuthService {
     );
 }
 
-  register(model: any) {
-    return this.http.post<User>(this.apiUrl + 'account/register', model).pipe(
+  register(model: any): Observable<User | null>  {
+    return this.http.post<User>(`${this.apiUrl}Account/register`, model).pipe(
       map(user => {
         if(user) {
           localStorage.setItem('user', JSON.stringify(user));
-          this.currentUser.set(user);
+          return user;
+          //this.currentUser.set(user);
         }
-        return user;
+        return null;
       })
     )
   }
