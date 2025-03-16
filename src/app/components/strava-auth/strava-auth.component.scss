@@ -1,120 +1,123 @@
-// :root {
-//     --pumpkin: rgba(250, 131, 52, 1);
-//     --steel-blue: rgba(63, 136, 197, 1);
-//     --dim-gray: rgba(114, 110, 96, 1);
-//     --platinum: rgba(217, 217, 217, 1);
-//     --white-smoke: rgba(239, 242, 239, 1);
-// }
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap");
 
-// html {
-//     font-size: 14px;
-// }
+.auth-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 380px; /* Fixed width */
+  height: 200px; /* Fixed height */
+  margin: auto auto; /* Center horizontally */
+  margin-top: 20vh;
+  background: rgba(102, 102, 101, 0.9); /* Slightly opaque background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for contrast */
+  position: relative; /* Position relative to the page */
+  z-index: 1; /* Ensure the button container is on top */
+  top: 10%; /* Offset from the top, adjust based on navbar height */
+}
 
-// @media (min-width: 768px) {
-//     html {
-//         font-size: 16px;
-//     }
-// }
+html,
+body {
+  margin-top: 80px; 
+  padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+* {
+    border: 0;
+    font: inherit;
+    font-style: normal;
+    font-size: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    quotes: none;
+    text-decoration: none;
+    vertical-align: baseline;
+}
+#wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111111;
+  
+  .col{
+    width:50%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:nth-child(1){
+      background-color: #EBEBEB;
+    }
+    
+    &:nth-child(2){
+      background-color: #111111;
+    }
+    
+  }
+}
+.btn {
+  font-size:16px;
+  font-weight: 600;
+  background-color:#ff5400;
+  padding:24px 24px 24px 32px;
+  display:flex;
+  align-items:center;
+  border-radius:99px;
+  position:relative;
+  transition: all .5s cubic-bezier(.77,0,.175,1);
+  
+  .text{
+    color:#fff;
+    line-height:1;
+    position:relative;
+    z-index:5;
+    margin-right:32px;
+  }
+  
+  img{
+    display:inline-block;
+    position:relative;
+    z-index:5;
+    transform: rotate(0deg) translateX(0);
+    transform-origin: left;
+    transition: all .5s cubic-bezier(.77,0,.175,1);
+  }
+  
+  &::before{
+    content:'';
+    //background-color: var(--primary-color);
+    background-color:#3c769c;
+    width:40px;
+    height:40px;
+    display:block;
+    position:absolute;
+    z-index:1;
+    border-radius:99px;
+    top:50%;
+    right:19px;
+    transform:translateY(-50%);
+    transition: all .5s cubic-bezier(.77,0,.175,1);
+  }
+  
+}
 
-// html {
-//     position: relative;
-//     min-height: 100%;
-// }
+.btn:hover{
+  
+  img{
+    transform: scale(180%) translateX(-15px);
+  }
+  
+  &::before{
+    content:'';
+    width:105%;
+    height:105%;
+    right:0;
+  }
+}
 
-// body {
-//     margin-bottom: 60px;
-//     background-color: var(--steel-blue);
-// }
-
-// .container {
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: flex-start;
-//     margin: 20px;
-// }
-
-// /* Style each step */
-// .step {
-//     flex: 1;
-//     padding: 10px;
-//     background-color: var(--white-smoke); /* Use timberwolf color */
-//     border-radius: 10px;
-//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-//     min-height: 500px;
-//     width: 30%;
-// }
-
-// .step.step-2 {
-//     min-width: 500px; /* Adjust the width as needed */
-//     /* Other styles specific to Step 2 */
-// }
-
-// .step + .step {
-//     margin-left: 20px; /* Adjust this value for the desired gap */
-// }
-
-// /* Style the form elements */
-// form {
-//     margin-top: 10px;
-// }
-
-// label {
-//     font-weight: bold;
-// }
-
-// input[type="text"] {
-//     width: 100%;
-//     padding: 8px;
-//     margin-top: 5px;
-//     margin-bottom: 10px;
-//     border: 1px solid #ccc;
-//     border-radius: 5px;
-// }
-
-// input[type="submit"] {
-//     background-color: var(--pumpkin);
-//     color: #fff;
-//     padding: 10px 20px;
-//     border: none;
-//     border-radius: 5px;
-//     cursor: pointer;
-// }
-
-// /* Style the links */
-// a{
-//     color: #007bff;
-//     text-decoration: none;
-//     word-break: break-all;
-// }
-
-// a:hover {
-//     text-decoration: underline;
-// }
-
-// .two-columns {
-//     display: flex;
-//     justify-content: space-between;
-// }
-
-// .column {
-//     flex: 1;
-//     padding: 5px;
-//     background-color: var(--white-smoke);
-//     min-height: 500px;
-
-// }
-
-// /* Style the substeps and image containers as before */
-// .substep {
-//     margin-bottom: 20px;
-// }
-
-// .image-container {
-//     text-align: center;
-//     max-width: 10%;
-//     margin-top: 10px;
-// }
-
-// .image-container img{
-//     max-width: 250px;
-// }

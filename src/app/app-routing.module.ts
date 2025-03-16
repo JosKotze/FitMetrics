@@ -12,11 +12,10 @@ import { MapDetailComponent } from './components/map-detail/map-detail.component
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  { path: '', component: HomeComponent }, // Protected route
-  { path: 'register', component: RegisterComponent }, // Protected route
-  { path: 'stravaAuth', component: StravaAuthComponent }, // Protected route
-  { path: 'map-detail/:userId/:activityId', component: MapDetailComponent },
-  { path: '**', redirectTo: '' }, // Redirect any unknown paths to home
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] }, 
+  { path: 'stravaAuth', component: StravaAuthComponent, canActivate: [AuthGuard] },
+  { path: 'map-detail/:userId/:activityId', component: MapDetailComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '', canActivate: [AuthGuard] },
 ];
 
 @NgModule({

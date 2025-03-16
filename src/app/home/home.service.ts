@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { environment } from '../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { Activity } from '../api/FitMetricsApi';
@@ -13,17 +13,15 @@ export class HomeService {
   private apiUrl = environment.apiBaseUrl;
   paginatedResult = signal<PaginatedResult<Activity[]> | null>(null);
 
-  constructor(private http: HttpClient) { }
-//https://localhost:7279/api/Activities/syncActivities?userId=1&accessToken=%221f590d15f92267e707441065a616dddf07c27ca7%22
-//https://localhost:7279/api/Activities/syncActivities?userId=1&accessToken=1f590d15f92267e707441065a616dddf07c27ca7
   
-  // syncActivities(userId: number, accessToken: string): Observable<string> {    
-  //   return this.http.get<string>(`${this.apiUrl}/api/Activities/syncActivities?userId=${userId}&accessToken=${accessToken}`);
-  // }
-// Inside your service class
+  constructor(private http: HttpClient) { }
+
+  
 syncActivities(userId: number, accessToken: string): Observable<any> {
+  console.log('Environment:', environment);
+  console.log('API Base URL:', environment.apiBaseUrl);
   console.log('Service call started');
-  return this.http.get<string>(`https://localhost:7279/api/Activities/syncActivities?userId=${userId}&accessToken=${accessToken}`, { responseType: 'text' as 'json' })
+  return this.http.get<string>(`${this.apiUrl}/api/Activities/syncActivities?userId=${userId}&accessToken=${accessToken}`, { responseType: 'text' as 'json' })
     .pipe(
       tap(() => console.log('Service call successful')),
       catchError((error) => {
