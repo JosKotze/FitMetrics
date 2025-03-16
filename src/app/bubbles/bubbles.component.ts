@@ -13,13 +13,19 @@ export class BubblesComponent implements OnInit, AfterViewInit {
   // THIS IS ALL CHAT GPT CODE !!!
   ngOnInit() {
     // Create an array of bubbles with random initial positions, speeds, and emoticons
+    // const emoticons = [
+    //   '🏊‍♂️', '🚴‍♂️', '🏕️', '🌅', '🛶', '🌄', '🏞️', '🌍', '🏃', '🏃🏼', '🚵🏼‍♂️', '🚵🏾‍♂️', '🏊🏼‍♀️', '🏊🏽‍♂️', '⛰️', '🏄', '🏄🏾'
+    // ];
+
     const emoticons = [
-      '🏊‍♂️', '🚴‍♂️', '🏕️', '🌅', '🛶', '🌄', '🏞️', '🌍', '🏃', '🏃🏼', '🚵🏼‍♂️', '🚵🏾‍♂️', '🏊🏼‍♀️', '🏊🏽‍♂️', '⛰️', '🏄', '🏄🏾'
+      '🎯', '🚴‍♂️', '🌍', '🏃',  
+      '🏄', '🏅', '⌚', '🚀',
+      '📈', '⚡', '🔥', '⏱️'
     ];
 
     this.bubbles = [];
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 12; i++) {
       // Initialize newBubble as undefined
       let newBubble: { x: number; y: number; speedX: number; speedY: number; icon: string } | undefined;
 
@@ -34,7 +40,7 @@ export class BubblesComponent implements OnInit, AfterViewInit {
           y: Math.random() * window.innerHeight,
           speedX: (Math.random() - 0.5) * 1.5,
           speedY: (Math.random() - 0.5) * 1.5,
-          icon: emoticons[Math.floor(Math.random() * emoticons.length)],
+          icon: emoticons[i],
         };
 
         // Check for overlap with existing bubbles

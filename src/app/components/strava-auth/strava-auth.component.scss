@@ -91,8 +91,8 @@ body {
   
   &::before{
     content:'';
-    //background-color: var(--primary-color);
-    background-color:#3c769c;
+    background-color: var(--primary-color);
+    //background-color:#3c769c;
     width:40px;
     height:40px;
     display:block;
@@ -105,6 +105,10 @@ body {
     transition: all .5s cubic-bezier(.77,0,.175,1);
   }
   
+}
+
+p {
+  color: #EBEBEB;
 }
 
 .btn:hover{

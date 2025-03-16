@@ -1,19 +1,22 @@
-
 <p-menubar [model]="items">
-    <ng-template pTemplate="start">
-        <h4 style="margin-right: 5px;">FitMetrics</h4>
-    </ng-template>
-    <ng-template pTemplate="end">              
-      <div style="display: flex; align-items: center; margin-left: 10px;">
-        <div style="margin-right: 10px;">
-          <span class="switch-icon mr-2" style="display: inline-block; vertical-align: middle;">
-            <i [class]="checked ? 'pi pi-sun' : 'pi pi-moon'"></i>
-          </span> 
-          <p-inputSwitch [(ngModel)]="checked" (click)="onThemeChange(checked ? 'light' : 'dark')"></p-inputSwitch>
-        </div>
-        <div>
-          <p-avatar image="https://graph.facebook.com/1826916050863232/picture?height=256&width=256" size="xlarge" shape="circle"></p-avatar>
-        </div>
+  <ng-template pTemplate="start">
+      <h4 style="margin-right: 5px;">FitMetrics</h4>
+  </ng-template>
+  <ng-template pTemplate="end">              
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <!-- Theme Switch -->
+      <div style="display: flex; align-items: center;">
+        <span class="switch-icon mr-3" style="display: flex; align-items: center; margin-right: 5px;">
+          <i [class]="checked ? 'pi pi-sun' : 'pi pi-moon'"></i>
+        </span> 
+        <p-inputSwitch class="mr-1" [(ngModel)]="checked" (click)="onThemeChange(checked ? 'light' : 'dark')"></p-inputSwitch>
       </div>
-    </ng-template>
+      <!-- Profile Avatar -->
+      <p-avatar 
+        image="https://graph.facebook.com/1826916050863232/picture?height=256&width=256" 
+        size="xlarge" 
+        shape="circle">
+      </p-avatar>
+    </div>
+  </ng-template>
 </p-menubar>
