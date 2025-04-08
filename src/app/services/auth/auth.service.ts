@@ -30,6 +30,7 @@ export class AuthService {
         map(user => {
             if (user) {
                 localStorage.setItem('user', JSON.stringify(user));
+                console.log('Is token expired?', this.isTokenExpired());
                 this.isUnauthorizedHandled = false
                 return user;
             }

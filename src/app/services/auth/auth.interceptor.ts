@@ -20,38 +20,33 @@ export class AuthInterceptor implements HttpInterceptor {
     private messageService: MessageService
   ) {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    // Retrieve token from AuthService (e.g., localStorage, sessionStorage, or state)
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let token = this.authService.getToken();
+    console.log('Interceptor token:', token);
+    console.log('Request URL:', req.url);
     if (token) {
-      // Clone the request to add the Authorization header
       req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('Request with Authorization header:', req.headers.get('Authorization'));
+    } else {
+      console.log('No token found, request sent without Authorization');
     }
-
+  
     return next.handle(req).pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            this.authService.setUnauthorizedHandled(true);
-            //this.showMessage(
-           //     'error',
-           //     'You are not authorized. Please log in.'
-           // );
-
-            this.authService.logout();
-            this.router.navigate(['/login']);
-          }
-          return throwError(error);  // Continue the response flow
-        })
-      );
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          console.log('401 error detected, logging out');
+          this.authService.setUnauthorizedHandled(true);
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        }
+        return throwError(error);
+      })
+    );
   }
-
   showMessage(severity: string, message: string) {
     this.messageService.add({
       key: 'confirm',
