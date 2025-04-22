@@ -4,7 +4,7 @@
     <!-- Activity Header -->
     <div class="activity-header">
       <h1>
-        {{ activityDetails?.name || 'Morning Run' }}
+        {{ activityDetails?.name || 'Activity' }}
         <i class="pi" [ngClass]="getActivityTypeIcon(activityDetails?.type)"></i>
       </h1>
       <h2>{{ activityDetails?.startDate | date:'MMMM d, yyyy' }}</h2>
@@ -14,43 +14,65 @@
     <div class="metrics-grid">
       <p-card styleClass="metric-card">
         <div class="metric-content">
-          <div class="metric-value">{{ formatDistance(activityDetails?.distance) }}</div>
           <div class="metric-label">DISTANCE</div>
+          <div class="metric-value">{{ formatDistance(activityDetails?.distance) }}</div>
         </div>
       </p-card>
 
       <p-card styleClass="metric-card">
         <div class="metric-content">
-          <div class="metric-value">{{ formatDuration(activityDetails?.movingTime) }}</div>
           <div class="metric-label">TIME</div>
+          <div class="metric-value">{{ formatDuration(activityDetails?.movingTime) }}</div>
         </div>
       </p-card>
 
       <p-card styleClass="metric-card">
         <div class="metric-content">
-          <div class="metric-value">{{ formatPace(activityDetails?.movingTime, activityDetails?.distance) }}</div>
           <div class="metric-label">PACE</div>
+          <div class="metric-value">{{ formatPace(activityDetails?.movingTime, activityDetails?.distance) }}</div>
         </div>
       </p-card>
 
       <p-card styleClass="metric-card">
         <div class="metric-content">
-          <div class="metric-value">{{ activityDetails?.kilojoules || '756' }}</div>
           <div class="metric-label">CALORIES</div>
+          <div class="metric-value">{{ activityDetails?.kilojoules || '0' }}</div>
         </div>
       </p-card>
 
       <p-card styleClass="metric-card">
         <div class="metric-content">
-          <div class="metric-value">{{ formatElevation(activityDetails?.totalElevationGain) }}</div>
           <div class="metric-label">ELEVATION</div>
+          <div class="metric-value">{{ formatElevation(activityDetails?.totalElevationGain) }}</div>
         </div>
       </p-card>
 
       <p-card styleClass="metric-card">
         <div class="metric-content">
-          <div class="metric-value">{{ activityDetails?.averageHeartrate || '165' }}</div>
+          <div class="metric-label">AVG HR</div>
+          <div class="metric-value">{{ activityDetails?.averageHeartrate || '0' }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">Type</div>
+          <div class="metric-value">{{ activityDetails?.sportType || '0' }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
           <div class="metric-label">HR AVG</div>
+          <div class="metric-value">{{ activityDetails?.averageHeartrate || '0' }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">MAX HR </div>
+          <div class="metric-value">{{ activityDetails?.averageHeartrate || '0' }}</div>
+
         </div>
       </p-card>
     </div>

@@ -5,7 +5,7 @@ import mapboxgl from "mapbox-gl"
 import * as polyline from "@mapbox/polyline"
 import { ActivityService } from "../../services/activity/activity.service"
 import { selectAccessToken } from "../../store/selectors/auth.selector"
-import type { Activity } from "../../api/FitMetricsApi"
+import type { Activity, ActivityDetails } from "../../api/FitMetricsApi"
 
 interface Split {
   kilometer: number
@@ -24,10 +24,9 @@ export class MapDetailComponent implements OnInit {
   route = inject(ActivatedRoute)
   store = inject(Store)
 
-  accessToken = this.store.selectSignal(selectAccessToken)
   activityId = ""
   userId = ""
-  activityDetails: Activity | undefined
+  activityDetails: ActivityDetails | undefined
 
   // Chart data
   paceChartData: any
@@ -48,38 +47,60 @@ export class MapDetailComponent implements OnInit {
     this.fetchActivityDetails()
     this.initCharts()
     this.loadMap()
+
+
+    //console.log("TEST ", this.activityDetails[0].distance)
   }
 
   fetchActivityDetails(): void {
-    this.activityService.getActivityById(+this.userId, +this.activityId).subscribe({
-      next: (activity: Activity) => {
-        this.activityDetails = activity
-        this.generateMockSplits()
-        this.updateChartData()
+    this.activityService.getActivityDetailsById(+this.userId, +this.activityId).subscribe({
+      next: (activity: ActivityDetails | ActivityDetails[]) => {
+        if (Array.isArray(activity)) {
+          this.activityDetails = activity[0];
+        } else {
+          this.activityDetails = activity;
+        }
+        this.generateMockSplits();
+        this.updateChartData();
+        console.log("Activity details:", this.activityDetails);
       },
       error: (err) => {
-        console.error("Error fetching activity details:", err)
+        console.error("Error fetching activity details:", err);
       },
-    })
+    });
   }
 
   loadMap(): void {
-    const token = this.accessToken()
+    const token = localStorage.getItem('accesstoken');
     if (token) {
+      // Fetch the map using the access token
       this.activityService.getActivityMap(token, +this.userId, +this.activityId).subscribe({
         next: (mapData) => {
           if (mapData.polyline) {
-            this.renderMap(mapData.polyline)
+            this.renderMap(mapData.polyline);
           } else {
-            console.warn("Polyline data is missing.")
+            console.warn("Polyline data is missing.");
           }
         },
         error: (err) => {
-          console.error("Failed to fetch activity map:", err)
+          console.error("Failed to fetch activity map with access token:", err);
         },
-      })
+      });
     } else {
-      console.error("Access token is null or undefined")
+      // Handle the case where the access token is null
+      console.warn("Access token is null. Attempting to load map from database...");
+      this.activityService.getActivityMap(null, +this.userId, +this.activityId).subscribe({
+        next: (mapData) => {
+          if (mapData.polyline) {
+            this.renderMap(mapData.polyline);
+          } else {
+            console.warn("Polyline data is missing from database.");
+          }
+        },
+        error: (err) => {
+          console.error("Failed to fetch activity map from database:", err);
+        },
+      });
     }
   }
 
