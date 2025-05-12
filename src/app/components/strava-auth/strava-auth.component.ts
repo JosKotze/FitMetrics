@@ -56,7 +56,7 @@ export class StravaAuthComponent implements OnInit {
   
         this.store.dispatch(setAccessToken({ accessToken: response.access_token }));
         this.store.dispatch(setAthleteProfilePicture({ athleteProfilePictureUrl: response.athlete.profile }));
-        this.authService.updateAccessTokenLocalStorage(response.access_token, response.expires_at);
+        this.authService.updateAccessTokenLocalStorage(response.access_token, response.expires_at, response.refresh_token);
         this.successMessage = 'Successfully authorized';
         this.authorized = true;
       } else {
@@ -75,7 +75,7 @@ export class StravaAuthComponent implements OnInit {
           if (response.access_token) {
             this.store.dispatch(setAccessToken({ accessToken: response.access_token }));
             this.store.dispatch(setAthleteProfilePicture({ athleteProfilePictureUrl: response.athlete.profile}))
-            this.authService.updateAccessTokenLocalStorage(response.access_token, response.expires_at);
+            this.authService.updateAccessTokenLocalStorage(response.access_token, response.expires_at, response.refresh_token);
             this.successMessage = 'Successfully authorized'
             this.authorized = true;
           } else {

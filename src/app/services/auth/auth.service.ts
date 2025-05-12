@@ -1,7 +1,7 @@
 ;// auth.service.ts
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectIsAuthenticated } from '../../store/selectors/session.selector';
 import { User } from '../../models/User';
@@ -99,9 +99,11 @@ export class AuthService {
     this.isUnauthorizedHandled = false
   }
 
-  updateAccessTokenLocalStorage(accesstoken: string, expiresAt: number) {
+  updateAccessTokenLocalStorage(accesstoken: string, expiresAt: number, refreshToken: string) {
     localStorage.setItem('accesstoken', accesstoken);
     localStorage.setItem('expiresAt', expiresAt.toString());
+    localStorage.setItem('refresh_token', refreshToken);
+
   }
 
   setSession(accessToken: string, expiresAt: number, refreshToken: string) {
@@ -113,13 +115,23 @@ export class AuthService {
     this.startLogoutTimer(expiresIn);
   }
   
-  startLogoutTimer(duration: number){
+  startLogoutTimer(duration: number) {
     if (this.logoutTimer) {
       clearTimeout(this.logoutTimer);
     }
-
-    this.logoutTimer = setTimeout(() => this.logout(), duration)
-  } /// update this ---
+  
+    this.logoutTimer = setTimeout(() => {
+      this.refreshAccessToken().subscribe({
+        next: () => {
+          console.log('Access token refreshed. Logout timer restarted.');
+        },
+        error: () => {
+          console.error('Failed to refresh access token. Logging out.');
+          this.logout();
+        }
+      });
+    }, duration - 3600000); // Refresh the token 1 hour before it expires
+  }
 
   // checkAutoLogout() {
   //   const expiresAt = Number(localStorage.getItem('expires_at'));
@@ -153,6 +165,37 @@ export class AuthService {
       return payload.exp * 1000; // Expiration time in milliseconds
     }
     return 0;
+  }
+
+  refreshAccessToken(): Observable<any> {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (!refreshToken) {
+      console.error('No refresh token found. User needs to log in again.');
+      this.logout();
+      return new Observable(); // Return an empty observable if no refresh token is found
+    }
+  
+    const clientId = environment.stravaClientID; // Your Strava client ID
+    const clientSecret = environment.stravaClientSecret; // Your Strava client secret
+  
+    return this.http.post('https://www.strava.com/oauth/token', {
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }).pipe(
+      map((response: any) => {
+        // Update local storage with the new tokens
+        this.setSession(response.access_token, response.expires_at, response.refresh_token);
+        console.log('Access token refreshed successfully.');
+        return response;
+      }),
+      catchError((error) => {
+        console.error('Failed to refresh access token:', error);
+        this.logout(); // Log the user out if the refresh fails
+        return throwError(error);
+      })
+    );
   }
 
   setUnauthorizedHandled(value: boolean) {

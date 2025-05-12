@@ -4,8 +4,7 @@ import { Store } from "@ngrx/store"
 import mapboxgl from "mapbox-gl"
 import * as polyline from "@mapbox/polyline"
 import { ActivityService } from "../../services/activity/activity.service"
-import { selectAccessToken } from "../../store/selectors/auth.selector"
-import type { Activity, ActivityDetails } from "../../api/FitMetricsApi"
+import type { ActivityDetails } from "../../api/FitMetricsApi"
 
 interface Split {
   kilometer: number
@@ -408,7 +407,7 @@ export class MapDetailComponent implements OnInit {
   }
 
   generateMockSplits(): void {
-    // Generate mock splits data for demonstration
+    // Refactor this to get real splits from the activity details
     this.splits = Array.from({ length: 10 }, (_, i) => ({
       kilometer: i + 1,
       pace: `${4 + Math.floor(Math.random() * 2)}:${Math.floor(Math.random() * 60)
