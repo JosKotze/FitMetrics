@@ -23,7 +23,7 @@ export class Client {
      * @return OK
      */
     register(body: RegisterDto | undefined): Promise<UserDto> {
-        let url_ = this.baseUrl + "/api/Account/register";
+        let url_ = this.baseUrl + "/api/account/register";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -65,7 +65,7 @@ export class Client {
      * @return OK
      */
     login(body: LoginDto | undefined): Promise<UserDto> {
-        let url_ = this.baseUrl + "/api/Account/login";
+        let url_ = this.baseUrl + "/api/account/login";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -103,15 +103,20 @@ export class Client {
     }
 
     /**
-     * @param accessToken (optional) 
+     * @param userId (optional) 
+     * @param activityId (optional) 
      * @return OK
      */
-    getActivitiesFromStrava(accessToken: string | undefined): Promise<StravaActivityData[]> {
-        let url_ = this.baseUrl + "/api/Activities/getActivitiesFromStrava?";
-        if (accessToken === null)
-            throw new Error("The parameter 'accessToken' cannot be null.");
-        else if (accessToken !== undefined)
-            url_ += "accessToken=" + encodeURIComponent("" + accessToken) + "&";
+    getActivityById(userId: number | undefined, activityId: number | undefined): Promise<Activity> {
+        let url_ = this.baseUrl + "/api/Activities/getActivityById?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        if (activityId === null)
+            throw new Error("The parameter 'activityId' cannot be null.");
+        else if (activityId !== undefined)
+            url_ += "activityId=" + encodeURIComponent("" + activityId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -122,25 +127,18 @@ export class Client {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGetActivitiesFromStrava(_response);
+            return this.processGetActivityById(_response);
         });
     }
 
-    protected processGetActivitiesFromStrava(response: Response): Promise<StravaActivityData[]> {
+    protected processGetActivityById(response: Response): Promise<Activity> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(StravaActivityData.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = Activity.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -148,7 +146,187 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<StravaActivityData[]>(null as any);
+        return Promise.resolve<Activity>(null as any);
+    }
+
+    /**
+     * @param accessToken (optional) 
+     * @param userId (optional) 
+     * @param activityId (optional) 
+     * @return OK
+     */
+    saveActivityMap(accessToken: string | undefined, userId: number | undefined, activityId: number | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/Activities/saveActivityMap?";
+        if (accessToken === null)
+            throw new Error("The parameter 'accessToken' cannot be null.");
+        else if (accessToken !== undefined)
+            url_ += "accessToken=" + encodeURIComponent("" + accessToken) + "&";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        if (activityId === null)
+            throw new Error("The parameter 'activityId' cannot be null.");
+        else if (activityId !== undefined)
+            url_ += "activityId=" + encodeURIComponent("" + activityId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "POST",
+            headers: {
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSaveActivityMap(_response);
+        });
+    }
+
+    protected processSaveActivityMap(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @param userId (optional) 
+     * @param activityId (optional) 
+     * @return OK
+     */
+    getActivityDetails(userId: number | undefined, activityId: number | undefined): Promise<ActivityDetails> {
+        let url_ = this.baseUrl + "/api/Activities/getActivityDetails?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        if (activityId === null)
+            throw new Error("The parameter 'activityId' cannot be null.");
+        else if (activityId !== undefined)
+            url_ += "activityId=" + encodeURIComponent("" + activityId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetActivityDetails(_response);
+        });
+    }
+
+    protected processGetActivityDetails(response: Response): Promise<ActivityDetails> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ActivityDetails.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ActivityDetails>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    getActivityMap(body: GetActivityMapRequest | undefined): Promise<Map> {
+        let url_ = this.baseUrl + "/api/Activities/getActivityMap";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetActivityMap(_response);
+        });
+    }
+
+    protected processGetActivityMap(response: Response): Promise<Map> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Map.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Map>(null as any);
+    }
+
+    /**
+     * @param userId (optional) 
+     * @param accessToken (optional) 
+     * @return OK
+     */
+    syncActivities(userId: number | undefined, accessToken: string | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/Activities/syncActivities?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        if (accessToken === null)
+            throw new Error("The parameter 'accessToken' cannot be null.");
+        else if (accessToken !== undefined)
+            url_ += "accessToken=" + encodeURIComponent("" + accessToken) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSyncActivities(_response);
+        });
+    }
+
+    protected processSyncActivities(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -196,41 +374,116 @@ export class Client {
     }
 
     /**
-     * @param accessToken (optional) 
+     * @param year (optional) 
+     * @param type (optional) 
+     * @param userId (optional) 
      * @return OK
      */
-    saveActivitiesFromStrava(accessToken: string | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/Activities/saveActivitiesFromStrava?";
-        if (accessToken === null)
-            throw new Error("The parameter 'accessToken' cannot be null.");
-        else if (accessToken !== undefined)
-            url_ += "accessToken=" + encodeURIComponent("" + accessToken) + "&";
+    getActivityByTypeByYear(year: number | undefined, type: string | undefined, userId: number | undefined): Promise<Activity[]> {
+        let url_ = this.baseUrl + "/api/Activities/getActivityByTypeByYear?";
+        if (year === null)
+            throw new Error("The parameter 'year' cannot be null.");
+        else if (year !== undefined)
+            url_ += "year=" + encodeURIComponent("" + year) + "&";
+        if (type === null)
+            throw new Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
-            method: "POST",
+            method: "GET",
             headers: {
+                "Accept": "text/plain"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processSaveActivitiesFromStrava(_response);
+            return this.processGetActivityByTypeByYear(_response);
         });
     }
 
-    protected processSaveActivitiesFromStrava(response: Response): Promise<void> {
+    protected processGetActivityByTypeByYear(response: Response): Promise<Activity[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
-            return;
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Activity.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<void>(null as any);
+        return Promise.resolve<Activity[]>(null as any);
+    }
+
+    /**
+     * @param pageNumber (optional) 
+     * @param pageSize (optional) 
+     * @return OK
+     */
+    getPagedActivities(pageNumber: number | undefined, pageSize: number | undefined): Promise<Activity[]> {
+        let url_ = this.baseUrl + "/api/Activities/getPagedActivities?";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetPagedActivities(_response);
+        });
+    }
+
+    protected processGetPagedActivities(response: Response): Promise<Activity[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Activity.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Activity[]>(null as any);
     }
 
     /**
@@ -275,6 +528,142 @@ export class Client {
             });
         }
         return Promise.resolve<Activity[]>(null as any);
+    }
+
+    /**
+     * @param type (optional) 
+     * @param userId (optional) 
+     * @return OK
+     */
+    getActivitiesByType(type: string | undefined, userId: number | undefined): Promise<Activity[]> {
+        let url_ = this.baseUrl + "/api/Activities/getActivitiesByType?";
+        if (type === null)
+            throw new Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "type=" + encodeURIComponent("" + type) + "&";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetActivitiesByType(_response);
+        });
+    }
+
+    protected processGetActivitiesByType(response: Response): Promise<Activity[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Activity.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Activity[]>(null as any);
+    }
+
+    /**
+     * @param userId (optional) 
+     * @return OK
+     */
+    getLatestActivity(userId: number | undefined): Promise<Activity[]> {
+        let url_ = this.baseUrl + "/api/Activities/getLatestActivity?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetLatestActivity(_response);
+        });
+    }
+
+    protected processGetLatestActivity(response: Response): Promise<Activity[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Activity.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Activity[]>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    fallback(): Promise<void> {
+        let url_ = this.baseUrl + "/api/Fallback";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processFallback(_response);
+        });
+    }
+
+    protected processFallback(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
     }
 
     /**
@@ -324,28 +713,20 @@ export class Client {
 
 export class Activity implements IActivity {
     id?: number;
+    activityId?: number;
+    userId?: number;
     pace?: string | undefined;
     name?: string | undefined;
     distance?: number;
     movingTime?: number;
+    averageHeartrate?: number | undefined;
+    averageSpeed?: number;
     totalElevationGain?: number;
     type?: string | undefined;
     startDate?: Date | undefined;
     startDateLocal?: Date | undefined;
     timezone?: string | undefined;
-    utcOffset?: number | undefined;
-    locationCity?: string | undefined;
-    locationState?: string | undefined;
-    locationCountry?: string | undefined;
-    achievementCount?: number | undefined;
-    averageSpeed?: number;
-    maxSpeed?: number;
-    averageWatts?: number | undefined;
-    kilojoules?: number | undefined;
-    deviceWatts?: boolean | undefined;
-    averageHeartrate?: number | undefined;
     maxHeartrate?: number | undefined;
-    userId?: number;
 
     constructor(data?: IActivity) {
         if (data) {
@@ -359,28 +740,20 @@ export class Activity implements IActivity {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.activityId = _data["activityId"];
+            this.userId = _data["userId"];
             this.pace = _data["pace"];
             this.name = _data["name"];
             this.distance = _data["distance"];
             this.movingTime = _data["movingTime"];
+            this.averageHeartrate = _data["averageHeartrate"];
+            this.averageSpeed = _data["averageSpeed"];
             this.totalElevationGain = _data["totalElevationGain"];
             this.type = _data["type"];
             this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
             this.startDateLocal = _data["startDateLocal"] ? new Date(_data["startDateLocal"].toString()) : <any>undefined;
             this.timezone = _data["timezone"];
-            this.utcOffset = _data["utcOffset"];
-            this.locationCity = _data["locationCity"];
-            this.locationState = _data["locationState"];
-            this.locationCountry = _data["locationCountry"];
-            this.achievementCount = _data["achievementCount"];
-            this.averageSpeed = _data["averageSpeed"];
-            this.maxSpeed = _data["maxSpeed"];
-            this.averageWatts = _data["averageWatts"];
-            this.kilojoules = _data["kilojoules"];
-            this.deviceWatts = _data["deviceWatts"];
-            this.averageHeartrate = _data["averageHeartrate"];
             this.maxHeartrate = _data["maxHeartrate"];
-            this.userId = _data["userId"];
         }
     }
 
@@ -394,56 +767,364 @@ export class Activity implements IActivity {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["activityId"] = this.activityId;
+        data["userId"] = this.userId;
         data["pace"] = this.pace;
         data["name"] = this.name;
         data["distance"] = this.distance;
         data["movingTime"] = this.movingTime;
+        data["averageHeartrate"] = this.averageHeartrate;
+        data["averageSpeed"] = this.averageSpeed;
         data["totalElevationGain"] = this.totalElevationGain;
         data["type"] = this.type;
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["startDateLocal"] = this.startDateLocal ? this.startDateLocal.toISOString() : <any>undefined;
         data["timezone"] = this.timezone;
-        data["utcOffset"] = this.utcOffset;
-        data["locationCity"] = this.locationCity;
-        data["locationState"] = this.locationState;
-        data["locationCountry"] = this.locationCountry;
-        data["achievementCount"] = this.achievementCount;
-        data["averageSpeed"] = this.averageSpeed;
-        data["maxSpeed"] = this.maxSpeed;
-        data["averageWatts"] = this.averageWatts;
-        data["kilojoules"] = this.kilojoules;
-        data["deviceWatts"] = this.deviceWatts;
-        data["averageHeartrate"] = this.averageHeartrate;
         data["maxHeartrate"] = this.maxHeartrate;
-        data["userId"] = this.userId;
         return data;
     }
 }
 
 export interface IActivity {
     id?: number;
+    activityId?: number;
+    userId?: number;
     pace?: string | undefined;
     name?: string | undefined;
     distance?: number;
     movingTime?: number;
+    averageHeartrate?: number | undefined;
+    averageSpeed?: number;
     totalElevationGain?: number;
     type?: string | undefined;
     startDate?: Date | undefined;
     startDateLocal?: Date | undefined;
     timezone?: string | undefined;
+    maxHeartrate?: number | undefined;
+}
+
+export class ActivityDetails implements IActivityDetails {
+    id?: number;
+    activityId?: number;
+    userId?: number;
+    externalId?: string | undefined;
+    uploadId?: number | undefined;
+    athleteId?: number;
+    name?: string | undefined;
+    distance?: number;
+    movingTime?: number;
+    elapsedTime?: number;
+    totalElevationGain?: number;
+    type?: string | undefined;
+    sportType?: string | undefined;
+    startDate?: Date | undefined;
+    startDateLocal?: Date | undefined;
+    timezone?: string | undefined;
     utcOffset?: number | undefined;
-    locationCity?: string | undefined;
-    locationState?: string | undefined;
-    locationCountry?: string | undefined;
-    achievementCount?: number | undefined;
+    startLatlng?: number[] | undefined;
+    endLatlng?: number[] | undefined;
+    achievementCount?: number;
+    kudosCount?: number;
+    commentCount?: number;
+    athleteCount?: number;
+    photoCount?: number;
+    totalPhotoCount?: number;
+    mapId?: string | undefined;
+    polyline?: string | undefined;
+    summaryPolyline?: string | undefined;
+    trainer?: boolean;
+    commute?: boolean;
+    manual?: boolean;
+    private?: boolean;
+    flagged?: boolean;
+    visibility?: string | undefined;
+    gearId?: string | undefined;
+    deviceName?: string | undefined;
+    embedToken?: string | undefined;
     averageSpeed?: number;
     maxSpeed?: number;
+    averageCadence?: number | undefined;
     averageWatts?: number | undefined;
-    kilojoules?: number | undefined;
-    deviceWatts?: boolean | undefined;
     averageHeartrate?: number | undefined;
     maxHeartrate?: number | undefined;
+    weightedAverageWatts?: number | undefined;
+    kilojoules?: number | undefined;
+    deviceWatts?: boolean | undefined;
+    maxWatts?: number | undefined;
+    elevHigh?: number | undefined;
+    elevLow?: number | undefined;
+    prCount?: number;
+    calories?: number | undefined;
+    hasKudoed?: boolean;
+    workoutType?: number | undefined;
+    description?: string | undefined;
+    resourceState?: number;
+    segmentEffortsJson?: string | undefined;
+    splitsMetricJson?: string | undefined;
+    lapsJson?: string | undefined;
+
+    constructor(data?: IActivityDetails) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.activityId = _data["activityId"];
+            this.userId = _data["userId"];
+            this.externalId = _data["externalId"];
+            this.uploadId = _data["uploadId"];
+            this.athleteId = _data["athleteId"];
+            this.name = _data["name"];
+            this.distance = _data["distance"];
+            this.movingTime = _data["movingTime"];
+            this.elapsedTime = _data["elapsedTime"];
+            this.totalElevationGain = _data["totalElevationGain"];
+            this.type = _data["type"];
+            this.sportType = _data["sportType"];
+            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
+            this.startDateLocal = _data["startDateLocal"] ? new Date(_data["startDateLocal"].toString()) : <any>undefined;
+            this.timezone = _data["timezone"];
+            this.utcOffset = _data["utcOffset"];
+            if (Array.isArray(_data["startLatlng"])) {
+                this.startLatlng = [] as any;
+                for (let item of _data["startLatlng"])
+                    this.startLatlng!.push(item);
+            }
+            if (Array.isArray(_data["endLatlng"])) {
+                this.endLatlng = [] as any;
+                for (let item of _data["endLatlng"])
+                    this.endLatlng!.push(item);
+            }
+            this.achievementCount = _data["achievementCount"];
+            this.kudosCount = _data["kudosCount"];
+            this.commentCount = _data["commentCount"];
+            this.athleteCount = _data["athleteCount"];
+            this.photoCount = _data["photoCount"];
+            this.totalPhotoCount = _data["totalPhotoCount"];
+            this.mapId = _data["mapId"];
+            this.polyline = _data["polyline"];
+            this.summaryPolyline = _data["summaryPolyline"];
+            this.trainer = _data["trainer"];
+            this.commute = _data["commute"];
+            this.manual = _data["manual"];
+            this.private = _data["private"];
+            this.flagged = _data["flagged"];
+            this.visibility = _data["visibility"];
+            this.gearId = _data["gearId"];
+            this.deviceName = _data["deviceName"];
+            this.embedToken = _data["embedToken"];
+            this.averageSpeed = _data["averageSpeed"];
+            this.maxSpeed = _data["maxSpeed"];
+            this.averageCadence = _data["averageCadence"];
+            this.averageWatts = _data["averageWatts"];
+            this.averageHeartrate = _data["averageHeartrate"];
+            this.maxHeartrate = _data["maxHeartrate"];
+            this.weightedAverageWatts = _data["weightedAverageWatts"];
+            this.kilojoules = _data["kilojoules"];
+            this.deviceWatts = _data["deviceWatts"];
+            this.maxWatts = _data["maxWatts"];
+            this.elevHigh = _data["elevHigh"];
+            this.elevLow = _data["elevLow"];
+            this.prCount = _data["prCount"];
+            this.calories = _data["calories"];
+            this.hasKudoed = _data["hasKudoed"];
+            this.workoutType = _data["workoutType"];
+            this.description = _data["description"];
+            this.resourceState = _data["resourceState"];
+            this.segmentEffortsJson = _data["segmentEffortsJson"];
+            this.splitsMetricJson = _data["splitsMetricJson"];
+            this.lapsJson = _data["lapsJson"];
+        }
+    }
+
+    static fromJS(data: any): ActivityDetails {
+        data = typeof data === 'object' ? data : {};
+        let result = new ActivityDetails();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["activityId"] = this.activityId;
+        data["userId"] = this.userId;
+        data["externalId"] = this.externalId;
+        data["uploadId"] = this.uploadId;
+        data["athleteId"] = this.athleteId;
+        data["name"] = this.name;
+        data["distance"] = this.distance;
+        data["movingTime"] = this.movingTime;
+        data["elapsedTime"] = this.elapsedTime;
+        data["totalElevationGain"] = this.totalElevationGain;
+        data["type"] = this.type;
+        data["sportType"] = this.sportType;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["startDateLocal"] = this.startDateLocal ? this.startDateLocal.toISOString() : <any>undefined;
+        data["timezone"] = this.timezone;
+        data["utcOffset"] = this.utcOffset;
+        if (Array.isArray(this.startLatlng)) {
+            data["startLatlng"] = [];
+            for (let item of this.startLatlng)
+                data["startLatlng"].push(item);
+        }
+        if (Array.isArray(this.endLatlng)) {
+            data["endLatlng"] = [];
+            for (let item of this.endLatlng)
+                data["endLatlng"].push(item);
+        }
+        data["achievementCount"] = this.achievementCount;
+        data["kudosCount"] = this.kudosCount;
+        data["commentCount"] = this.commentCount;
+        data["athleteCount"] = this.athleteCount;
+        data["photoCount"] = this.photoCount;
+        data["totalPhotoCount"] = this.totalPhotoCount;
+        data["mapId"] = this.mapId;
+        data["polyline"] = this.polyline;
+        data["summaryPolyline"] = this.summaryPolyline;
+        data["trainer"] = this.trainer;
+        data["commute"] = this.commute;
+        data["manual"] = this.manual;
+        data["private"] = this.private;
+        data["flagged"] = this.flagged;
+        data["visibility"] = this.visibility;
+        data["gearId"] = this.gearId;
+        data["deviceName"] = this.deviceName;
+        data["embedToken"] = this.embedToken;
+        data["averageSpeed"] = this.averageSpeed;
+        data["maxSpeed"] = this.maxSpeed;
+        data["averageCadence"] = this.averageCadence;
+        data["averageWatts"] = this.averageWatts;
+        data["averageHeartrate"] = this.averageHeartrate;
+        data["maxHeartrate"] = this.maxHeartrate;
+        data["weightedAverageWatts"] = this.weightedAverageWatts;
+        data["kilojoules"] = this.kilojoules;
+        data["deviceWatts"] = this.deviceWatts;
+        data["maxWatts"] = this.maxWatts;
+        data["elevHigh"] = this.elevHigh;
+        data["elevLow"] = this.elevLow;
+        data["prCount"] = this.prCount;
+        data["calories"] = this.calories;
+        data["hasKudoed"] = this.hasKudoed;
+        data["workoutType"] = this.workoutType;
+        data["description"] = this.description;
+        data["resourceState"] = this.resourceState;
+        data["segmentEffortsJson"] = this.segmentEffortsJson;
+        data["splitsMetricJson"] = this.splitsMetricJson;
+        data["lapsJson"] = this.lapsJson;
+        return data;
+    }
+}
+
+export interface IActivityDetails {
+    id?: number;
+    activityId?: number;
     userId?: number;
+    externalId?: string | undefined;
+    uploadId?: number | undefined;
+    athleteId?: number;
+    name?: string | undefined;
+    distance?: number;
+    movingTime?: number;
+    elapsedTime?: number;
+    totalElevationGain?: number;
+    type?: string | undefined;
+    sportType?: string | undefined;
+    startDate?: Date | undefined;
+    startDateLocal?: Date | undefined;
+    timezone?: string | undefined;
+    utcOffset?: number | undefined;
+    startLatlng?: number[] | undefined;
+    endLatlng?: number[] | undefined;
+    achievementCount?: number;
+    kudosCount?: number;
+    commentCount?: number;
+    athleteCount?: number;
+    photoCount?: number;
+    totalPhotoCount?: number;
+    mapId?: string | undefined;
+    polyline?: string | undefined;
+    summaryPolyline?: string | undefined;
+    trainer?: boolean;
+    commute?: boolean;
+    manual?: boolean;
+    private?: boolean;
+    flagged?: boolean;
+    visibility?: string | undefined;
+    gearId?: string | undefined;
+    deviceName?: string | undefined;
+    embedToken?: string | undefined;
+    averageSpeed?: number;
+    maxSpeed?: number;
+    averageCadence?: number | undefined;
+    averageWatts?: number | undefined;
+    averageHeartrate?: number | undefined;
+    maxHeartrate?: number | undefined;
+    weightedAverageWatts?: number | undefined;
+    kilojoules?: number | undefined;
+    deviceWatts?: boolean | undefined;
+    maxWatts?: number | undefined;
+    elevHigh?: number | undefined;
+    elevLow?: number | undefined;
+    prCount?: number;
+    calories?: number | undefined;
+    hasKudoed?: boolean;
+    workoutType?: number | undefined;
+    description?: string | undefined;
+    resourceState?: number;
+    segmentEffortsJson?: string | undefined;
+    splitsMetricJson?: string | undefined;
+    lapsJson?: string | undefined;
+}
+
+export class GetActivityMapRequest implements IGetActivityMapRequest {
+    accessToken?: string | undefined;
+    userId?: number;
+    activityId?: number;
+
+    constructor(data?: IGetActivityMapRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.accessToken = _data["accessToken"];
+            this.userId = _data["userId"];
+            this.activityId = _data["activityId"];
+        }
+    }
+
+    static fromJS(data: any): GetActivityMapRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetActivityMapRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["accessToken"] = this.accessToken;
+        data["userId"] = this.userId;
+        data["activityId"] = this.activityId;
+        return data;
+    }
+}
+
+export interface IGetActivityMapRequest {
+    accessToken?: string | undefined;
+    userId?: number;
+    activityId?: number;
 }
 
 export class LoginDto implements ILoginDto {
@@ -487,6 +1168,13 @@ export interface ILoginDto {
 }
 
 export class Map implements IMap {
+    id?: number;
+    mapId?: string | undefined;
+    activityId?: number;
+    userId?: number;
+    polyline?: string | undefined;
+    startLatlng?: number[] | undefined;
+    endLatlng?: number[] | undefined;
 
     constructor(data?: IMap) {
         if (data) {
@@ -498,6 +1186,23 @@ export class Map implements IMap {
     }
 
     init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.mapId = _data["mapId"];
+            this.activityId = _data["activityId"];
+            this.userId = _data["userId"];
+            this.polyline = _data["polyline"];
+            if (Array.isArray(_data["startLatlng"])) {
+                this.startLatlng = [] as any;
+                for (let item of _data["startLatlng"])
+                    this.startLatlng!.push(item);
+            }
+            if (Array.isArray(_data["endLatlng"])) {
+                this.endLatlng = [] as any;
+                for (let item of _data["endLatlng"])
+                    this.endLatlng!.push(item);
+            }
+        }
     }
 
     static fromJS(data: any): Map {
@@ -509,11 +1214,33 @@ export class Map implements IMap {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["mapId"] = this.mapId;
+        data["activityId"] = this.activityId;
+        data["userId"] = this.userId;
+        data["polyline"] = this.polyline;
+        if (Array.isArray(this.startLatlng)) {
+            data["startLatlng"] = [];
+            for (let item of this.startLatlng)
+                data["startLatlng"].push(item);
+        }
+        if (Array.isArray(this.endLatlng)) {
+            data["endLatlng"] = [];
+            for (let item of this.endLatlng)
+                data["endLatlng"].push(item);
+        }
         return data;
     }
 }
 
 export interface IMap {
+    id?: number;
+    mapId?: string | undefined;
+    activityId?: number;
+    userId?: number;
+    polyline?: string | undefined;
+    startLatlng?: number[] | undefined;
+    endLatlng?: number[] | undefined;
 }
 
 export class RegisterDto implements IRegisterDto {
@@ -554,266 +1281,6 @@ export class RegisterDto implements IRegisterDto {
 export interface IRegisterDto {
     username: string;
     password: string;
-}
-
-export class StravaActivityData implements IStravaActivityData {
-    pace?: string | undefined;
-    resourceState?: number;
-    athlete?: User;
-    name?: string | undefined;
-    distance?: number;
-    movingTime?: number;
-    elapsedTime?: number;
-    totalElevationGain?: number;
-    type?: string | undefined;
-    sportType?: string | undefined;
-    workoutType?: number | undefined;
-    id?: number;
-    startDate?: Date | undefined;
-    startDateLocal?: Date | undefined;
-    timezone?: string | undefined;
-    utcOffset?: number | undefined;
-    locationCity?: string | undefined;
-    locationState?: string | undefined;
-    locationCountry?: string | undefined;
-    achievementCount?: number | undefined;
-    kudosCount?: number | undefined;
-    commentCount?: number | undefined;
-    athleteCount?: number | undefined;
-    photoCount?: number | undefined;
-    map?: Map;
-    trainer?: boolean | undefined;
-    commute?: boolean | undefined;
-    manual?: boolean | undefined;
-    private?: boolean | undefined;
-    visibility?: string | undefined;
-    flagged?: boolean | undefined;
-    gearId?: string | undefined;
-    startLatlng?: number[] | undefined;
-    endLatlng?: number[] | undefined;
-    averageSpeed?: number;
-    maxSpeed?: number;
-    hasHeartrate?: boolean;
-    heartrateOptOut?: boolean;
-    displayHideHeartrateOption?: boolean;
-    uploadId?: number | undefined;
-    externalId?: string | undefined;
-    fromAcceptedTag?: boolean;
-    prCount?: number;
-    totalPhotoCount?: number;
-    hasKudoed?: boolean;
-    averageWatts?: number | undefined;
-    kilojoules?: number | undefined;
-    deviceWatts?: boolean | undefined;
-    averageHeartrate?: number | undefined;
-    maxHeartrate?: number | undefined;
-    elevHigh?: number | undefined;
-    elevLow?: number | undefined;
-    userId?: number;
-
-    constructor(data?: IStravaActivityData) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.pace = _data["pace"];
-            this.resourceState = _data["resourceState"];
-            this.athlete = _data["athlete"] ? User.fromJS(_data["athlete"]) : <any>undefined;
-            this.name = _data["name"];
-            this.distance = _data["distance"];
-            this.movingTime = _data["movingTime"];
-            this.elapsedTime = _data["elapsedTime"];
-            this.totalElevationGain = _data["totalElevationGain"];
-            this.type = _data["type"];
-            this.sportType = _data["sportType"];
-            this.workoutType = _data["workoutType"];
-            this.id = _data["id"];
-            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
-            this.startDateLocal = _data["startDateLocal"] ? new Date(_data["startDateLocal"].toString()) : <any>undefined;
-            this.timezone = _data["timezone"];
-            this.utcOffset = _data["utcOffset"];
-            this.locationCity = _data["locationCity"];
-            this.locationState = _data["locationState"];
-            this.locationCountry = _data["locationCountry"];
-            this.achievementCount = _data["achievementCount"];
-            this.kudosCount = _data["kudosCount"];
-            this.commentCount = _data["commentCount"];
-            this.athleteCount = _data["athleteCount"];
-            this.photoCount = _data["photoCount"];
-            this.map = _data["map"] ? Map.fromJS(_data["map"]) : <any>undefined;
-            this.trainer = _data["trainer"];
-            this.commute = _data["commute"];
-            this.manual = _data["manual"];
-            this.private = _data["private"];
-            this.visibility = _data["visibility"];
-            this.flagged = _data["flagged"];
-            this.gearId = _data["gearId"];
-            if (Array.isArray(_data["startLatlng"])) {
-                this.startLatlng = [] as any;
-                for (let item of _data["startLatlng"])
-                    this.startLatlng!.push(item);
-            }
-            if (Array.isArray(_data["endLatlng"])) {
-                this.endLatlng = [] as any;
-                for (let item of _data["endLatlng"])
-                    this.endLatlng!.push(item);
-            }
-            this.averageSpeed = _data["averageSpeed"];
-            this.maxSpeed = _data["maxSpeed"];
-            this.hasHeartrate = _data["hasHeartrate"];
-            this.heartrateOptOut = _data["heartrateOptOut"];
-            this.displayHideHeartrateOption = _data["displayHideHeartrateOption"];
-            this.uploadId = _data["uploadId"];
-            this.externalId = _data["externalId"];
-            this.fromAcceptedTag = _data["fromAcceptedTag"];
-            this.prCount = _data["prCount"];
-            this.totalPhotoCount = _data["totalPhotoCount"];
-            this.hasKudoed = _data["hasKudoed"];
-            this.averageWatts = _data["averageWatts"];
-            this.kilojoules = _data["kilojoules"];
-            this.deviceWatts = _data["deviceWatts"];
-            this.averageHeartrate = _data["averageHeartrate"];
-            this.maxHeartrate = _data["maxHeartrate"];
-            this.elevHigh = _data["elevHigh"];
-            this.elevLow = _data["elevLow"];
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): StravaActivityData {
-        data = typeof data === 'object' ? data : {};
-        let result = new StravaActivityData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["pace"] = this.pace;
-        data["resourceState"] = this.resourceState;
-        data["athlete"] = this.athlete ? this.athlete.toJSON() : <any>undefined;
-        data["name"] = this.name;
-        data["distance"] = this.distance;
-        data["movingTime"] = this.movingTime;
-        data["elapsedTime"] = this.elapsedTime;
-        data["totalElevationGain"] = this.totalElevationGain;
-        data["type"] = this.type;
-        data["sportType"] = this.sportType;
-        data["workoutType"] = this.workoutType;
-        data["id"] = this.id;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["startDateLocal"] = this.startDateLocal ? this.startDateLocal.toISOString() : <any>undefined;
-        data["timezone"] = this.timezone;
-        data["utcOffset"] = this.utcOffset;
-        data["locationCity"] = this.locationCity;
-        data["locationState"] = this.locationState;
-        data["locationCountry"] = this.locationCountry;
-        data["achievementCount"] = this.achievementCount;
-        data["kudosCount"] = this.kudosCount;
-        data["commentCount"] = this.commentCount;
-        data["athleteCount"] = this.athleteCount;
-        data["photoCount"] = this.photoCount;
-        data["map"] = this.map ? this.map.toJSON() : <any>undefined;
-        data["trainer"] = this.trainer;
-        data["commute"] = this.commute;
-        data["manual"] = this.manual;
-        data["private"] = this.private;
-        data["visibility"] = this.visibility;
-        data["flagged"] = this.flagged;
-        data["gearId"] = this.gearId;
-        if (Array.isArray(this.startLatlng)) {
-            data["startLatlng"] = [];
-            for (let item of this.startLatlng)
-                data["startLatlng"].push(item);
-        }
-        if (Array.isArray(this.endLatlng)) {
-            data["endLatlng"] = [];
-            for (let item of this.endLatlng)
-                data["endLatlng"].push(item);
-        }
-        data["averageSpeed"] = this.averageSpeed;
-        data["maxSpeed"] = this.maxSpeed;
-        data["hasHeartrate"] = this.hasHeartrate;
-        data["heartrateOptOut"] = this.heartrateOptOut;
-        data["displayHideHeartrateOption"] = this.displayHideHeartrateOption;
-        data["uploadId"] = this.uploadId;
-        data["externalId"] = this.externalId;
-        data["fromAcceptedTag"] = this.fromAcceptedTag;
-        data["prCount"] = this.prCount;
-        data["totalPhotoCount"] = this.totalPhotoCount;
-        data["hasKudoed"] = this.hasKudoed;
-        data["averageWatts"] = this.averageWatts;
-        data["kilojoules"] = this.kilojoules;
-        data["deviceWatts"] = this.deviceWatts;
-        data["averageHeartrate"] = this.averageHeartrate;
-        data["maxHeartrate"] = this.maxHeartrate;
-        data["elevHigh"] = this.elevHigh;
-        data["elevLow"] = this.elevLow;
-        data["userId"] = this.userId;
-        return data;
-    }
-}
-
-export interface IStravaActivityData {
-    pace?: string | undefined;
-    resourceState?: number;
-    athlete?: User;
-    name?: string | undefined;
-    distance?: number;
-    movingTime?: number;
-    elapsedTime?: number;
-    totalElevationGain?: number;
-    type?: string | undefined;
-    sportType?: string | undefined;
-    workoutType?: number | undefined;
-    id?: number;
-    startDate?: Date | undefined;
-    startDateLocal?: Date | undefined;
-    timezone?: string | undefined;
-    utcOffset?: number | undefined;
-    locationCity?: string | undefined;
-    locationState?: string | undefined;
-    locationCountry?: string | undefined;
-    achievementCount?: number | undefined;
-    kudosCount?: number | undefined;
-    commentCount?: number | undefined;
-    athleteCount?: number | undefined;
-    photoCount?: number | undefined;
-    map?: Map;
-    trainer?: boolean | undefined;
-    commute?: boolean | undefined;
-    manual?: boolean | undefined;
-    private?: boolean | undefined;
-    visibility?: string | undefined;
-    flagged?: boolean | undefined;
-    gearId?: string | undefined;
-    startLatlng?: number[] | undefined;
-    endLatlng?: number[] | undefined;
-    averageSpeed?: number;
-    maxSpeed?: number;
-    hasHeartrate?: boolean;
-    heartrateOptOut?: boolean;
-    displayHideHeartrateOption?: boolean;
-    uploadId?: number | undefined;
-    externalId?: string | undefined;
-    fromAcceptedTag?: boolean;
-    prCount?: number;
-    totalPhotoCount?: number;
-    hasKudoed?: boolean;
-    averageWatts?: number | undefined;
-    kilojoules?: number | undefined;
-    deviceWatts?: boolean | undefined;
-    averageHeartrate?: number | undefined;
-    maxHeartrate?: number | undefined;
-    elevHigh?: number | undefined;
-    elevLow?: number | undefined;
-    userId?: number;
 }
 
 export class User implements IUser {

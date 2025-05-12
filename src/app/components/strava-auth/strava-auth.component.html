@@ -1,27 +1,13 @@
-     <div class="card flex justify-content-center">
-        <div class="flex flex-column gap-2 p-4 w-6">
-            <h2>Strava Authorization</h2>
-            <form [formGroup]="notAuthFormGroup" (ngSubmit)="onSubmit()">
-                <div class="flex flex-column gap-2 mx-auto">
-                    <label for="clientId">Enter Strava client ID and Client Secret</label>
-                    <small id="clientId-help">Strava Client ID:</small>
-                    <input class="mx-auto w-full" style="height: 2rem;" [formControl]="notAuthFormGroup.controls.clientId" pInputText id="clientId" name="clientId" />
-                    
-                    <small id="secret-help">Strava Client Secret:</small>
-                    <input class="mx-auto w-full" style="height: 2rem;" [formControl]="notAuthFormGroup.controls.clientSecret" pInputText id="secret" name="clientSecret" />
-        
-                    <button class="mx-auto text-center" type="submit" pButton label="Navigate to Strava"></button>
-                </div>
-            </form>
-            <div class="flex flex-column gap-2 mx-auto mt-5">
-                <button class="mx-auto text-center w-auto" (click)="finalizeAuthorization()" pButton label="Finalize Authorizaiton"></button>
-            </div>
-        </div>
-    </div>
-    <!-- <div>
-        <h1>
-            You are authorized. Navigate to homepage to see data
-        </h1>
-        <p>{{ this.authorized }}</p>
-        <button class="mx-auto text-center w-auto" pButton routerLink="/" label="Home"></button>
-    </div> -->
+<div class="auth-btn">
+    <button class="btn" (click)="signInToStrava()">
+        <span class="text">Sign-in to Strava</span>
+        <img src="assets/images/strava-logo.png" alt="strava-logo" width="30" height="30" style="margin-left: 8px;">
+    </button>
+    <p class="mt-4">This will allow us to see all your activities.</p>
+</div>
+
+
+<div class="mt-10">
+    <app-bubbles></app-bubbles>
+</div>
+

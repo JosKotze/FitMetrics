@@ -42,12 +42,12 @@
             "styles": [
               "src/styles.scss",
               {
-                "input": "node_modules/primeng/resources/themes/md-dark-deeppurple/theme.css",
+                "input": "node_modules/primeng/resources/themes/lara-dark-teal/theme.css",
                 "bundleName": "dark",
                 "inject": false
               },
               {
-                "input": "node_modules/primeng/resources/themes/md-light-deeppurple/theme.css",
+                "input": "node_modules/primeng/resources/themes/lara-light-teal/theme.css",
                 "bundleName": "light",
                 "inject": false
               },
@@ -58,6 +58,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -73,11 +79,18 @@
               "optimization": {
                 "styles": {
                   "inlineCritical": false
-                }
+                },
+                "fonts": false
               },
               "outputHashing": "all"
             },
             "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true

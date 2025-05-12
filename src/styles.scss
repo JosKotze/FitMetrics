@@ -8,11 +8,26 @@
 @import "primeflex/primeflex.css";
 @import "primeicons/primeicons.css";
 
+// // Your custom variables and overrides
+// :root {
+// // Primary colors
+// --primary-color: #fc4c02; // Strava orange
+// --primary-dark: #e34402;
+// --primary-light: #ff7340;
+
+// // Secondary colors
+// --secondary-color: #1e293b; // Dark blue-gray
+// --secondary-light: #334155;
+
+// // Accent colors
+// --accent-color: #4caf50; // Green for positive metrics
+// --accent-secondary: #2196f3; // Blue for charts/data
+//   }
 
 html {
     font-size: 1rem;
     height: 100%;
-}
+}  
 
 body {
     font-family: var(--font-family);

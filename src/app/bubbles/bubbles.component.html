@@ -1,0 +1,12 @@
+<div class="container">
+    <div
+      *ngFor="let bubble of bubbles"
+      class="bubble"
+      [ngStyle]="{
+        transform: 'translate(' + bubble.x + 'px, ' + bubble.y + 'px)'
+      }"
+    >
+      {{ bubble.icon }}
+    </div>
+  </div>
+  

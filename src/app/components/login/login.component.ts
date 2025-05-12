@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { setloginSuccess } from '../../store/actions/auth.actions';
 import { User } from '../../models/User';
 import { setStartupData } from '../../store/actions/startup.actions';
+import { AuthInterceptor } from '../../services/auth/auth.interceptor';
 
 @Component({
   selector: 'app-login',
@@ -49,18 +50,15 @@ export class LoginComponent {
 
   login() {
     this.authService.login(this.model).subscribe({
-        next: (user: User | null) => { // Explicitly type the user parameter
+        next: (user: User | null) => {
             if (user) {
                 const startupData = {
                     userId: user.userId,
                     userName: user.userName,
                     accessToken: user.token
                 };
-
-                // Dispatch action to set startup data
                 this.store.dispatch(setStartupData({ startup: startupData }));
-                
-                // Navigate to home page
+                this.authService.isUnauthorizedHandled = false;
                 this.router.navigateByUrl('/');
             }
         },

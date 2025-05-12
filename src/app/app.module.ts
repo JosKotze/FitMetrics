@@ -14,7 +14,7 @@ import { StravaAuthComponent } from './components/strava-auth/strava-auth.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,6 @@ import { HomeComponent } from './home/home.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { appReducers } from './store/app.state';
-//import { metaReducers } from './store/metaReducers/localStorageSyncReducer';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ChartModule } from 'primeng/chart';
 import { AccordionModule } from 'primeng/accordion';
@@ -34,6 +33,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
 import { MapDetailComponent } from './components/map-detail/map-detail.component';
+import { AuthInterceptor } from './services/auth/auth.interceptor';
+import { BubblesComponent } from './bubbles/bubbles.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MapDetailComponent } from './components/map-detail/map-detail.component
     SignupComponent,
     HomeComponent,
     DashboardComponent,
-    MapDetailComponent
+    MapDetailComponent,
+    BubblesComponent
   ],
   imports: [
     AppRoutingModule,
@@ -73,12 +75,10 @@ import { MapDetailComponent } from './components/map-detail/map-detail.component
     TableModule,
   ],
   providers: [
-    //provideClientHydration(),
-    //FitMetricsApi,
-    //provideHttpClient(withFetch()) // Enabling fetch API 
     provideClientHydration(), 
     provideHttpClient(withFetch()),
-    MessageService
+    MessageService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

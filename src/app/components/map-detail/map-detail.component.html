@@ -1,50 +1,147 @@
-<div class="flex flex-wrap md:flex-nowrap h-screen">
-    <!-- Left side (Map) -->
-    <div class="w-full md:w-1/2 h-1/2 md:h-full bg-gray-300 flex items-center justify-center">
-        <div id="map" class="mx-auto mt-8 border-round-md" style="width: 95%; height: 500px;"></div>
+<div class="activity-detail-container bg-primary-reverse">
+  <!-- left side (Activity Details) -->
+  <div class="activity-details bg-primary">
+    <!-- Activity Header -->
+    <div class="activity-header">
+      <h1>
+        {{ activityDetails?.name || 'Activity' }}
+        <i class="pi" [ngClass]="getActivityTypeIcon(activityDetails?.type)"></i>
+      </h1>
+      <h2>{{ activityDetails?.startDate | date:'MMMM d, yyyy' }}</h2>
     </div>
-  
-    <!-- Right side (Content & Table) -->
-    <div class="w-full md:w-1/2 h-1/2 md:h-full p-4">
-      <p class="mb-4">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula euismod risus, eu suscipit est fermentum ut.
-      </p>
-  
-      <!-- Running Data Table -->
-      <div class="overflow-x-auto">
-        <table class="w-full border border-gray-300">
-          <thead>
-            <tr class="bg-gray-200">
-              <th class="p-2 border">Date</th>
-              <th class="p-2 border">Distance (km)</th>
-              <th class="p-2 border">Time</th>
-              <th class="p-2 border">Pace (min/km)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="p-2 border">2024-02-15</td>
-              <td class="p-2 border">10.5</td>
-              <td class="p-2 border">50:30</td>
-              <td class="p-2 border">4:48</td>
-            </tr>
-            <tr>
-              <td class="p-2 border">2024-02-14</td>
-              <td class="p-2 border">7.2</td>
-              <td class="p-2 border">35:10</td>
-              <td class="p-2 border">4:53</td>
-            </tr>
-            <tr>
-              <td class="p-2 border">2024-02-13</td>
-              <td class="p-2 border">12.8</td>
-              <td class="p-2 border">1:02:45</td>
-              <td class="p-2 border">4:54</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
+    <!-- Key Metrics -->
+    <div class="metrics-grid">
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">DISTANCE</div>
+          <div class="metric-value">{{ formatDistance(activityDetails?.distance) }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">TIME</div>
+          <div class="metric-value">{{ formatDuration(activityDetails?.movingTime) }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">PACE</div>
+          <div class="metric-value">{{ formatPace(activityDetails?.movingTime, activityDetails?.distance) }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">CALORIES</div>
+          <div class="metric-value">{{ activityDetails?.kilojoules || '0' }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">ELEVATION</div>
+          <div class="metric-value">{{ formatElevation(activityDetails?.totalElevationGain) }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">AVG HR</div>
+          <div class="metric-value">{{ activityDetails?.averageHeartrate || '0' }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">Type</div>
+          <div class="metric-value">{{ activityDetails?.sportType || '0' }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">HR AVG</div>
+          <div class="metric-value">{{ activityDetails?.averageHeartrate || '0' }}</div>
+        </div>
+      </p-card>
+
+      <p-card styleClass="metric-card">
+        <div class="metric-content">
+          <div class="metric-label">MAX HR </div>
+          <div class="metric-value">{{ activityDetails?.averageHeartrate || '0' }}</div>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Pace Chart -->
+    <!-- <p-card styleClass="pace-chart-card p-2 mb-4">
+      <ng-template pTemplate="header">
+        <div class="chart-header p-2">
+          <span>PACE</span>
+        </div>
+      </ng-template>
+      <p-chart type="line" [data]="paceChartData" [options]="paceChartOptions"></p-chart>
+    </p-card> -->
+
+    <!-- Splits Table -->
+
+    <!-- <p-card styleClass="splits-card p-2">
+      <ng-template pTemplate="header">
+        <div class="splits-header p-2">
+          <span>SPLITS</span>
+        </div>
+      </ng-template>
+      <p-table [value]="splits" styleClass="p-datatable-sm" [scrollable]="true" scrollHeight="200px">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>KM</th>
+            <th>PACE</th>
+            <th>HR</th>
+            <th>ELEV</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-split>
+          <tr>
+            <td>{{ split.kilometer }}</td>
+            <td>{{ split.pace }}</td>
+            <td>{{ split.heartRate }}</td>
+            <td>{{ split.elevation }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center">No splits data available</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card> -->
+  </div>
+
+  <div class="map-container bg-bluegray-800">
+    <div id="map" class="map-box"></div>
+    <div class="elevation-profile">
+      <p-card styleClass="elevation-card">
+        <ng-template pTemplate="header">
+          <div class="elevation-header p-2">
+            <span>Elevation Profile</span>
+            <span *ngIf="!hasElevationData" class="elevation-placeholder-text">Loading elevation data...</span>
+          </div>
+        </ng-template>
+        <ng-container *ngIf="hasElevationData; else noElevationData">
+          <div class="p-2">
+            <p-chart type="line" [data]="elevationChartData" [options]="elevationChartOptions"></p-chart>
+          </div>
+        </ng-container>
+        <ng-template #noElevationData>
+          <div class="elevation-placeholder p-2">
+            <i class="pi pi-chart-line"></i>
+            <span>Waiting for terrain data to load...</span>
+          </div>
+        </ng-template>
+      </p-card>
     </div>
   </div>
-  
-
-
+</div>

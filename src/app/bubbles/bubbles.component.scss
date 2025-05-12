@@ -1,0 +1,29 @@
+/* Container that holds the bubbles */
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -2;  /* Ensure bubbles are behind the card but above the background */
+  }
+  
+  /* Style for the individual bubbles */
+  .bubble {
+    position: absolute;
+    font-size: 40px;  /* Adjust based on the size of your emoticons */
+    text-align: center;
+    transition: transform 0.1s ease-out;
+    user-select: none;  /* Prevent text selection */
+  }
+  
+  /* The card where Strava Authorization resides */
+  .card {
+    position: relative;  /* Ensure the card stays on top of bubbles */
+    z-index: 10; /* Higher than the container to keep it above the bubbles */
+  }
+  
+  body {
+    margin-top: 80px; 
+  }

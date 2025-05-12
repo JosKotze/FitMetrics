@@ -5,6 +5,7 @@ import { selectAccessToken, selectAuthCode } from './store/selectors/auth.select
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { ActivityService } from './services/activity/activity.service';
+import { AuthService } from './services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,15 @@ import { ActivityService } from './services/activity/activity.service';
 export class AppComponent {
   title = 'FitMetrics';
   showNavbar: boolean = true;
-  activityService = inject(ActivityService)
+  activityService = inject(ActivityService);
+  authService = inject(AuthService);
 
     constructor(private router: Router) { }
 
   ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login']);
+    }
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
